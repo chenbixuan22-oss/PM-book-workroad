@@ -1,0 +1,3224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>产品需求手账</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CSS 变量
+   ============================================================ */
+:root {
+  --color-primary: #8B7355;
+  --color-primary-light: #A89279;
+  --color-primary-dark: #6B563F;
+  --color-secondary: #5B7B8F;
+  --color-ai: #4A7FB5;
+  --color-ai-light: #E8F1FA;
+  --color-ai-bg: #F0F6FC;
+
+  --bg-shelf: linear-gradient(180deg, #2D2118 0%, #4A3728 50%, #5D4A38 100%);
+  --bg-page: #F4EDE4;
+  --bg-paper: #FEFCF8;
+  --bg-paper-warm: #FAF5ED;
+
+  --text-primary: #2C241E;
+  --text-secondary: #6B5D50;
+  --text-tertiary: #9C8E7E;
+  --text-muted: #B8ADA0;
+  --text-inverse: #FEFCF8;
+
+  --color-success: #5B8C5A;
+  --color-warning: #C4913C;
+  --color-error: #C0564F;
+  --color-info: #5B7B8F;
+
+  --shadow-sm: 0 1px 3px rgba(60,40,20,0.08);
+  --shadow-md: 0 4px 12px rgba(60,40,20,0.1);
+  --shadow-lg: 0 8px 24px rgba(60,40,20,0.12);
+  --shadow-book: 2px 4px 16px rgba(60,40,20,0.15), 0 1px 3px rgba(60,40,20,0.1);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  --font-serif: 'Noto Serif SC', 'Songti SC', Georgia, serif;
+  --font-sans: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --sidebar-width: 220px;
+  --topbar-height: 56px;
+}
+
+/* ============================================================
+   Reset & Base
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
+body {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background: var(--bg-page);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, textarea { font-family: inherit; border: none; outline: none; }
+ul, ol { list-style: none; }
+
+/* ============================================================
+   Typography
+   ============================================================ */
+h1, h2, h3 { font-family: var(--font-serif); font-weight: 600; color: var(--text-primary); }
+h1 { font-size: 1.75rem; line-height: 1.4; }
+h2 { font-size: 1.35rem; line-height: 1.4; }
+h3 { font-size: 1.1rem; line-height: 1.4; }
+
+/* ============================================================
+   Utility Classes
+   ============================================================ */
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary  { color: var(--text-tertiary); }
+.text-serif     { font-family: var(--font-serif); }
+.text-mono      { font-family: var(--font-mono); }
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px; border-radius: var(--radius-sm);
+  font-size: 0.9rem; font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--color-primary); color: var(--text-inverse);
+  box-shadow: 0 1px 3px rgba(60,40,20,0.15);
+}
+.btn-primary:hover { background: var(--color-primary-dark); transform: translateY(-1px); }
+.btn-secondary {
+  background: transparent; color: var(--color-primary);
+  border: 1px solid var(--color-primary-light);
+}
+.btn-secondary:hover { background: rgba(139,115,85,0.08); }
+.btn-ghost {
+  color: var(--text-secondary); padding: 6px 12px;
+}
+.btn-ghost:hover { color: var(--text-primary); background: rgba(0,0,0,0.04); border-radius: var(--radius-sm); }
+.btn-sm { padding: 5px 12px; font-size: 0.8rem; }
+
+/* ============================================================
+   Cards
+   ============================================================ */
+.card {
+  background: var(--bg-paper);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+}
+
+/* Paper texture — subtle repeating gradient to mimic paper grain */
+.paper-texture {
+  background-color: var(--bg-paper);
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,185,165,0.03) 2px, rgba(200,185,165,0.03) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,185,165,0.02) 2px, rgba(200,185,165,0.02) 4px);
+}
+
+/* ============================================================
+   Tags / Badges
+   ============================================================ */
+.tag {
+  display: inline-flex; align-items: center;
+  padding: 2px 8px; border-radius: 6px;
+  font-size: 0.75rem; font-weight: 500;
+}
+.tag-success { background: rgba(91,140,90,0.12); color: var(--color-success); }
+.tag-warning { background: rgba(196,145,60,0.12); color: var(--color-warning); }
+.tag-error   { background: rgba(192,86,79,0.12); color: var(--color-error); }
+.tag-info    { background: rgba(91,123,143,0.12); color: var(--color-info); }
+.tag-ai      { background: var(--color-ai-light); color: var(--color-ai); }
+.tag-muted   { background: rgba(0,0,0,0.05); color: var(--text-tertiary); }
+
+/* ============================================================
+   Page Transition
+   ============================================================ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-enter { animation: fadeIn 0.25s ease-out; }
+
+/* ============================================================
+   Locked Chapter Styles
+   ============================================================ */
+.locked-chapter {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 50vh; text-align: center; padding: 48px 24px;
+}
+.locked-icon {
+  font-size: 4rem; margin-bottom: 16px; opacity: 0.4;
+  filter: grayscale(0.6);
+}
+.locked-title {
+  font-family: var(--font-serif); font-size: 1.5rem; color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+.locked-desc {
+  color: var(--text-tertiary); font-size: 0.9rem; max-width: 400px; margin-bottom: 28px;
+}
+.locked-progress-wrap {
+  width: 100%; max-width: 320px; margin-bottom: 20px;
+}
+.locked-progress-label {
+  font-size: 0.8rem; color: var(--text-tertiary); margin-bottom: 6px;
+}
+.locked-progress-bar-bg {
+  height: 10px; background: rgba(0,0,0,0.06); border-radius: 5px; overflow: hidden;
+}
+.locked-progress-bar-fill {
+  height: 100%; background: var(--color-primary); border-radius: 5px;
+  transition: width 0.5s ease;
+}
+.locked-progress-value {
+  font-size: 0.85rem; font-family: var(--font-mono); color: var(--color-primary);
+  font-weight: 600; margin-top: 6px;
+}
+.locked-hint {
+  font-size: 0.82rem; color: var(--text-muted); max-width: 360px;
+  margin-bottom: 24px; line-height: 1.6;
+}
+
+/* ============================================================
+   Stamp / Celebration Animation
+   ============================================================ */
+#stamp-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(44, 36, 30, 0.6);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+#stamp-overlay.stamp-visible { opacity: 1; }
+.stamp-container {
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+.stamp-badge {
+  width: 140px; height: 140px;
+  border: 4px solid var(--color-primary);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-paper);
+  box-shadow: 0 0 0 8px rgba(139,115,85,0.15), var(--shadow-lg);
+  animation: stampDrop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform: scale(2) rotate(-15deg); opacity: 0;
+}
+@keyframes stampDrop {
+  0% { transform: scale(2) rotate(-15deg); opacity: 0; }
+  60% { transform: scale(0.9) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.stamp-inner {
+  text-align: center;
+}
+.stamp-text-top {
+  font-family: var(--font-serif); font-size: 0.8rem;
+  color: var(--color-primary); font-weight: 600; letter-spacing: 2px;
+}
+.stamp-check {
+  font-size: 2.5rem; color: var(--color-success); font-weight: 700;
+  line-height: 1.2;
+}
+.stamp-text-bottom {
+  font-family: var(--font-serif); font-size: 0.9rem;
+  color: var(--color-primary); font-weight: 700;
+}
+.stamp-congrats {
+  font-size: 1rem; color: var(--text-inverse); font-weight: 500;
+  animation: fadeIn 0.4s 0.3s ease-out both;
+}
+.stamp-btn {
+  animation: fadeIn 0.4s 0.5s ease-out both;
+}
+
+/* ============================================================
+   Field-filled flash animation
+   ============================================================ */
+.req-fields-list {
+  display: flex; flex-direction: column; gap: 2px;
+  flex: 1; overflow-y: auto;
+}
+.req-field-row {
+  padding: 8px 10px; border-radius: var(--radius-sm);
+  transition: background 0.3s ease;
+}
+.req-field-row:hover { background: rgba(139,115,85,0.04); }
+.req-field-row.field-filled {
+  animation: fieldFlash 0.6s ease-out;
+}
+.req-field-header {
+  display: flex; align-items: center; gap: 6px; margin-bottom: 3px;
+}
+.req-field-dot { font-size: 0.6rem; line-height: 1; }
+.req-field-label {
+  font-size: 0.78rem; font-weight: 500; color: var(--text-tertiary);
+}
+.req-field-value {
+  font-size: 0.85rem; color: var(--text-primary); line-height: 1.5;
+  padding-left: 18px;
+}
+@keyframes fieldFlash {
+  0% { background: rgba(139,115,85,0.12); }
+  100% { background: transparent; }
+}
+.field-empty .req-field-value {
+  font-size: 0.82rem;
+}
+
+/* ============================================================
+   Scrollbar
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+/* ============================================================
+   Layout: App Shell
+   ============================================================ */
+#app { min-height: 100vh; }
+
+/* ------ Global Top Bar (书架首页) ------ */
+.topbar {
+  height: var(--topbar-height);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px;
+  background: var(--bg-paper);
+  border-bottom: 1px solid rgba(139,115,85,0.12);
+  position: sticky; top: 0; z-index: 100;
+}
+.topbar-logo {
+  font-family: var(--font-serif); font-size: 1.2rem; font-weight: 700;
+  color: var(--color-primary-dark);
+  display: flex; align-items: center; gap: 8px;
+}
+.topbar-logo::before {
+  content: '📒'; font-size: 1.3rem;
+}
+.topbar-actions { display: flex; align-items: center; gap: 12px; }
+.topbar-search {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg-page); border-radius: var(--radius-sm);
+  padding: 6px 14px; width: 240px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+.topbar-search:focus-within { border-color: var(--color-primary-light); }
+.topbar-search input {
+  background: transparent; flex: 1; font-size: 0.85rem;
+  color: var(--text-primary);
+}
+.topbar-search input::placeholder { color: var(--text-muted); }
+
+/* ------ Notebook Top Bar (需求内页) ------ */
+.nb-topbar {
+  height: var(--topbar-height);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  background: var(--bg-paper);
+  border-bottom: 1px solid rgba(139,115,85,0.12);
+  position: sticky; top: 0; z-index: 100;
+}
+.nb-topbar-left { display: flex; align-items: center; gap: 12px; }
+.nb-topbar-left .back-btn {
+  display: flex; align-items: center; gap: 4px;
+  color: var(--text-secondary); font-size: 0.85rem;
+  padding: 4px 8px; border-radius: var(--radius-sm);
+  transition: all 0.15s;
+}
+.nb-topbar-left .back-btn:hover { color: var(--text-primary); background: rgba(0,0,0,0.04); }
+.breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--text-tertiary); }
+.breadcrumb span { color: var(--text-muted); }
+.nb-topbar-center {
+  font-family: var(--font-serif); font-weight: 600; font-size: 1.05rem;
+  color: var(--text-primary);
+}
+.nb-topbar-right { display: flex; align-items: center; gap: 8px; }
+
+/* ------ Notebook Body Layout ------ */
+.nb-layout {
+  display: flex; min-height: calc(100vh - var(--topbar-height));
+}
+
+/* ------ Sidebar ------ */
+.nb-sidebar {
+  width: var(--sidebar-width);
+  background: var(--bg-paper-warm);
+  border-right: 1px solid rgba(139,115,85,0.1);
+  padding: 20px 0;
+  flex-shrink: 0;
+  position: sticky; top: var(--topbar-height);
+  height: calc(100vh - var(--topbar-height));
+  overflow-y: auto;
+  transition: width 0.25s ease, padding 0.25s ease;
+  display: flex; flex-direction: column;
+}
+.nb-sidebar .nb-sidebar-nav { flex: 1; }
+.nb-sidebar .sidebar-collapse-btn {
+  margin: 12px 16px; padding: 6px 12px;
+  font-size: 0.78rem; color: var(--text-tertiary);
+  display: flex; align-items: center; gap: 6px;
+  cursor: pointer; border-radius: var(--radius-sm);
+  transition: all 0.15s; background: none; border: none; font-family: inherit;
+}
+.nb-sidebar .sidebar-collapse-btn:hover { background: rgba(139,115,85,0.08); color: var(--text-secondary); }
+
+/* Collapsed sidebar: thin strip with expand button */
+.nb-sidebar.collapsed {
+  width: 36px; padding: 12px 0; overflow: hidden; align-items: center;
+}
+.nb-sidebar.collapsed .nb-sidebar-title,
+.nb-sidebar.collapsed .nb-sidebar-nav,
+.nb-sidebar.collapsed .sidebar-collapse-btn { display: none; }
+.nb-sidebar .sidebar-expand-btn {
+  display: none; width: 28px; height: 28px; border-radius: var(--radius-sm);
+  align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-tertiary); font-size: 0.8rem;
+  transition: all 0.15s; background: none; border: none; margin-top: 8px;
+}
+.nb-sidebar .sidebar-expand-btn:hover { background: rgba(139,115,85,0.1); color: var(--text-primary); }
+.nb-sidebar.collapsed .sidebar-expand-btn { display: flex; }
+
+/* --- Panel toggle buttons (clarify page) --- */
+.panel-toggle {
+  position: absolute; top: 12px; z-index: 10;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--bg-paper); border: 1px solid rgba(139,115,85,0.2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 0.7rem; color: var(--text-secondary);
+  transition: all 0.15s; box-shadow: var(--shadow-sm);
+}
+.panel-toggle:hover {
+  background: var(--color-primary); color: var(--text-inverse); border-color: var(--color-primary);
+}
+
+.clarify-left .panel-toggle { right: -12px; }
+.clarify-left.collapsed .panel-toggle { right: -28px; }
+
+.clarify-right .panel-toggle { left: -12px; }
+.clarify-right.collapsed .panel-toggle { left: -28px; }
+.nb-sidebar-title {
+  font-family: var(--font-serif); font-size: 0.8rem; font-weight: 600;
+  color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px;
+  padding: 0 20px; margin-bottom: 12px;
+}
+.nb-sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+.nb-sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 20px; font-size: 0.88rem;
+  color: var(--text-secondary);
+  transition: all 0.15s; cursor: pointer;
+  position: relative;
+  border-left: 3px solid transparent;
+}
+.nb-sidebar-item:hover {
+  background: rgba(139,115,85,0.06);
+  color: var(--text-primary);
+}
+.nb-sidebar-item.active {
+  background: rgba(139,115,85,0.1);
+  color: var(--color-primary-dark);
+  border-left-color: var(--color-primary);
+  font-weight: 500;
+}
+.nb-sidebar-item .icon { font-size: 1rem; flex-shrink: 0; }
+.nb-sidebar-item .label { flex: 1; }
+.nb-sidebar-item .status-dot {
+  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+}
+.status-dot.done    { background: var(--color-success); }
+.status-dot.current { background: var(--color-warning); box-shadow: 0 0 0 3px rgba(196,145,60,0.2); }
+.status-dot.pending { background: var(--text-muted); }
+
+/* ------ Notebook Main Content ------ */
+.nb-main {
+  flex: 1; padding: 28px 32px;
+  min-width: 0;
+  background: var(--bg-page);
+}
+
+/* ============================================================
+   Shelf Page — Book Cards
+   ============================================================ */
+.shelf-layout {
+  display: flex; gap: 24px;
+  padding: 20px 28px;
+  min-height: calc(100vh - var(--topbar-height) - 48px);
+}
+.shelf-main { flex: 1; min-width: 0; }
+.shelf-aside {
+  width: 260px; flex-shrink: 0;
+}
+
+/* Filter tabs */
+.filter-bar {
+  display: flex; align-items: center; gap: 16px; padding: 14px 28px;
+  background: var(--bg-paper-warm);
+  border-bottom: 1px solid rgba(139,115,85,0.08);
+}
+.filter-date { font-family: var(--font-serif); font-size: 0.85rem; font-weight: 500; color: var(--text-tertiary); white-space: nowrap; flex-shrink: 0; margin-left: auto; }
+.filter-period { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+.filter-period select { padding: 6px 12px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 500; color: var(--color-primary-dark); background: var(--bg-paper); border: 1px solid rgba(139,115,85,0.2); cursor: pointer; font-family: var(--font-serif); }
+.filter-period select:focus { border-color: var(--color-primary); outline: none; }
+.filter-divider { width: 1px; height: 20px; background: rgba(139,115,85,0.15); flex-shrink: 0; }
+.filter-tabs { display: flex; gap: 6px; flex: 1; }
+.filter-tab {
+  padding: 5px 14px; border-radius: var(--radius-sm);
+  font-size: 0.85rem; color: var(--text-secondary);
+  transition: all 0.15s; cursor: pointer;
+}
+.filter-tab:hover { background: rgba(139,115,85,0.08); color: var(--text-primary); }
+.filter-tab.active {
+  background: var(--color-primary); color: var(--text-inverse);
+}
+
+/* Book card grid */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 240px));
+  gap: 16px;
+}
+.book-card {
+  background: var(--bg-paper);
+  max-width: 240px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-book);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex; flex-direction: column;
+  aspect-ratio: 3 / 4;
+  position: relative;
+}
+.book-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 4px 8px 28px rgba(60,40,20,0.2), 0 2px 6px rgba(60,40,20,0.12);
+}
+/* Left spine decoration */
+.book-card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+.book-card[data-color="brown"]::before  { background: var(--color-primary); }
+.book-card[data-color="blue"]::before   { background: var(--color-secondary); }
+.book-card[data-color="green"]::before  { background: var(--color-success); }
+.book-card[data-color="orange"]::before { background: var(--color-warning); }
+.book-card[data-color="red"]::before    { background: var(--color-error); }
+.book-card[data-color="teal"]::before   { background: #5B8F8F; }
+.book-card-body {
+  flex: 1; padding: 18px 18px 18px 22px;
+  display: flex; flex-direction: column;
+}
+.book-card-title {
+  font-family: var(--font-serif); font-size: 1rem; font-weight: 600;
+  margin-bottom: 10px; line-height: 1.4;
+}
+.book-card-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: auto; }
+.book-card-progress { margin-top: 14px; }
+.book-card-progress-bar {
+  height: 4px; background: rgba(0,0,0,0.06); border-radius: 4px; overflow: hidden;
+}
+.book-card-progress-fill {
+  height: 100%; border-radius: 4px;
+  background: var(--color-primary);
+  transition: width 0.6s ease;
+}
+.book-card-progress-text {
+  font-size: 0.75rem; color: var(--text-tertiary); margin-top: 4px;
+  display: flex; justify-content: space-between;
+}
+.book-card-footer {
+  padding: 10px 18px 10px 22px;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  font-size: 0.75rem; color: var(--text-tertiary);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.book-card-risk {
+  font-size: 0.75rem; padding: 2px 6px;
+  border-radius: 3px; margin-top: 8px;
+}
+
+/* Shelf aside - weekly overview */
+.aside-card {
+  background: var(--bg-paper); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm); padding: 18px;
+  margin-bottom: 16px;
+}
+.aside-card h3 {
+  font-size: 0.95rem; margin-bottom: 14px;
+  padding-bottom: 10px; border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.stat-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+
+/* PM Profile Card */
+.pm-profile { display: flex; align-items: center; gap: 12px; }
+.pm-avatar-wrap { position: relative; flex-shrink: 0; }
+.pm-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--bg-page); border: 2px solid rgba(139,115,85,0.15); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; overflow: hidden; }
+.pm-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.pm-info { flex: 1; min-width: 0; }
+.pm-name { font-family: var(--font-serif); font-size: 0.92rem; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pm-bio { font-size: 0.78rem; color: var(--text-tertiary); line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.pm-edit-form { width: 100%; text-align: left; }
+.pm-edit-form label { font-size: 0.78rem; color: var(--text-tertiary); font-weight: 500; margin-bottom: 3px; display: block; }
+.pm-edit-form input, .pm-edit-form textarea { width: 100%; padding: 7px 10px; background: var(--bg-page); border: 1px solid rgba(139,115,85,0.15); border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--text-primary); margin-bottom: 10px; font-family: inherit; resize: none; }
+.pm-edit-form input:focus, .pm-edit-form textarea:focus { border-color: var(--color-primary); outline: none; }
+.stat-row .stat-value {
+  font-family: var(--font-mono); font-weight: 600; font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+/* Weekly Treasure Map */
+.treasure-map { position: relative; padding: 4px 0 0 0; }
+.treasure-map::before {
+  content: ''; position: absolute; left: 17px; top: 28px; bottom: 30px; width: 2px;
+  background: repeating-linear-gradient(180deg, var(--color-primary-light) 0px, var(--color-primary-light) 4px, transparent 4px, transparent 8px);
+  opacity: 0.5;
+}
+.tm-node { display: flex; align-items: flex-start; gap: 12px; position: relative; padding: 6px 0; }
+.tm-icon {
+  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0; position: relative; z-index: 1;
+  border: 2px solid; background: var(--bg-paper);
+}
+.tm-node.done .tm-icon { border-color: var(--color-success); background: rgba(91,140,90,0.1); }
+.tm-node.active .tm-icon { border-color: var(--color-warning); background: rgba(196,145,60,0.1); box-shadow: 0 0 0 3px rgba(196,145,60,0.15); }
+.tm-node.todo .tm-icon { border-color: var(--text-muted); background: var(--bg-page); opacity: 0.6; }
+.tm-body { flex: 1; padding-top: 4px; }
+.tm-title { font-size: 0.82rem; font-weight: 500; color: var(--text-primary); line-height: 1.4; }
+.tm-node.todo .tm-title { color: var(--text-muted); }
+.tm-detail { font-size: 0.72rem; color: var(--text-tertiary); margin-top: 2px; }
+.tm-node.done .tm-detail { color: var(--color-success); }
+.tm-node.active .tm-detail { color: var(--color-warning); }
+.tm-treasure {
+  margin-top: 10px; padding: 10px 12px; background: rgba(196,145,60,0.06); border-radius: var(--radius-sm);
+  border: 1px dashed rgba(196,145,60,0.25); font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5;
+  font-style: italic;
+}
+.tm-treasure::before { content: '🗺️ '; }
+
+/* ============================================================
+   Modal
+   ============================================================ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(44,36,30,0.5);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.modal-overlay.show { opacity: 1; pointer-events: auto; }
+.modal {
+  background: var(--bg-paper); border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(44,36,30,0.25);
+  width: 560px; max-height: 85vh; overflow-y: auto;
+  transform: translateY(20px);
+  transition: transform 0.25s ease;
+}
+.modal-overlay.show .modal { transform: translateY(0); }
+.modal-header {
+  padding: 22px 24px 0; display: flex; justify-content: space-between; align-items: center;
+}
+.modal-header h2 { font-size: 1.2rem; }
+.modal-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; color: var(--text-tertiary);
+  transition: background 0.15s;
+}
+.modal-close:hover { background: rgba(0,0,0,0.06); }
+.modal-body { padding: 20px 24px; }
+.modal-footer {
+  padding: 16px 24px; display: flex; justify-content: flex-end; gap: 10px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ============================================================
+   Placeholder for pages not yet filled
+   ============================================================ */
+.page-placeholder {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  min-height: 400px; text-align: center;
+  color: var(--text-tertiary);
+}
+.page-placeholder .ph-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
+.page-placeholder h2 { color: var(--text-secondary); margin-bottom: 8px; }
+.page-placeholder p { font-size: 0.9rem; }
+
+/* ============================================================
+   AI Clarify Page
+   ============================================================ */
+.clarify-layout { display: flex; gap: 0; height: calc(100vh - var(--topbar-height)); margin: -28px -32px; }
+.clarify-center { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.clarify-right { width: 360px; padding: 20px; border-left: 1px solid rgba(139,115,85,0.1); overflow-y: auto; flex-shrink: 0; background: var(--bg-paper); display: flex; flex-direction: column; }
+
+/* Clarify Tabs */
+.clarify-tabs { display: flex; gap: 2px; background: var(--bg-page); padding: 3px; border-radius: var(--radius-sm); margin-bottom: 18px; }
+.clarify-tab { flex: 1; padding: 7px 12px; border-radius: 6px; font-size: 0.82rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; text-align: center; transition: all 0.15s; background: none; border: none; font-family: inherit; }
+.clarify-tab:hover { color: var(--text-primary); }
+.clarify-tab.active { background: var(--bg-paper); color: var(--color-primary-dark); box-shadow: var(--shadow-sm); }
+
+.clarify-left h3 { font-size: 0.9rem; margin-bottom: 12px; }
+.original-req { padding: 12px; background: rgba(139,115,85,0.06); border-left: 3px solid var(--color-primary); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 16px; font-style: italic; }
+.gap-list { display: flex; flex-direction: column; gap: 8px; }
+.gap-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; padding: 6px 8px; border-radius: var(--radius-sm); }
+.gap-item.done { color: var(--color-success); background: rgba(91,140,90,0.06); }
+.gap-item.partial { color: var(--color-warning); background: rgba(196,145,60,0.06); }
+.gap-item.missing { color: var(--color-error); background: rgba(192,86,79,0.06); }
+
+.chat-area { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; background: var(--bg-page); }
+.chat-header { padding: 12px 20px; border-bottom: 1px solid rgba(139,115,85,0.08); background: var(--bg-paper); font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.chat-input-bar { padding: 12px 20px; border-top: 1px solid rgba(139,115,85,0.08); background: var(--bg-paper); display: flex; gap: 8px; align-items: center; }
+.chat-input-bar input { flex: 1; padding: 10px 14px; background: var(--bg-page); border-radius: var(--radius-sm); font-size: 0.88rem; color: var(--text-primary); border: 1px solid rgba(139,115,85,0.12); transition: border-color 0.2s; }
+.chat-input-bar input:focus { border-color: var(--color-primary); outline: none; }
+.chat-input-bar input:disabled { color: var(--text-muted); cursor: not-allowed; }
+.chat-input-bar input::placeholder { color: var(--text-muted); }
+.chat-send-btn { padding: 10px 18px; background: var(--color-primary); color: var(--text-inverse); border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.15s; flex-shrink: 0; }
+.chat-send-btn:hover { background: var(--color-primary-dark); }
+.chat-send-btn:disabled { background: var(--text-muted); cursor: not-allowed; }
+.chat-no-key { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--text-muted); flex: 1; }
+.chat-no-key a { color: var(--color-primary); cursor: pointer; text-decoration: underline; }
+
+/* AI typing indicator */
+.msg-loading .msg-bubble::after { content: ''; display: inline-block; width: 4px; height: 14px; background: var(--color-primary); margin-left: 2px; border-radius: 1px; animation: blink-caret 0.7s step-end infinite; vertical-align: text-bottom; }
+@keyframes blink-caret { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* Error message bubble */
+.msg-error .msg-bubble { background: rgba(192,86,79,0.08); color: var(--color-error); border: 1px solid rgba(192,86,79,0.15); border-bottom-left-radius: 2px; }
+.msg-error .msg-avatar { background: rgba(192,86,79,0.1); }
+
+.msg { display: flex; gap: 10px; max-width: 85%; }
+.msg-ai { align-self: flex-start; }
+.msg-user { align-self: flex-end; flex-direction: row-reverse; }
+.msg-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+.msg-ai .msg-avatar { background: var(--color-ai-light); }
+.msg-user .msg-avatar { background: rgba(139,115,85,0.1); }
+.msg-bubble { padding: 10px 14px; border-radius: var(--radius-md); font-size: 0.88rem; line-height: 1.6; }
+.msg-ai .msg-bubble { background: var(--color-ai-bg); color: var(--text-primary); border-bottom-left-radius: 2px; }
+.msg-user .msg-bubble { background: var(--bg-paper-warm); color: var(--text-primary); border-bottom-right-radius: 2px; border: 1px solid rgba(139,115,85,0.1); }
+
+.req-card-section { margin-bottom: 16px; }
+.req-card-section .section-label { font-size: 0.75rem; color: var(--text-tertiary); font-weight: 500; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+.req-card-section .section-value { font-size: 0.88rem; line-height: 1.6; color: var(--text-primary); }
+.req-card-section .ai-badge { font-size: 0.65rem; padding: 1px 6px; background: var(--color-ai-light); color: var(--color-ai); border-radius: 3px; }
+.req-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.req-tags .tag { font-size: 0.78rem; }
+.risk-item { display: flex; align-items: flex-start; gap: 6px; font-size: 0.85rem; color: var(--text-secondary); padding: 4px 0; }
+
+/* ============================================================
+   Overview Page
+   ============================================================ */
+.overview-header { margin-bottom: 32px; }
+.overview-meta { display: flex; gap: 24px; margin-top: 12px; font-size: 0.88rem; color: var(--text-secondary); flex-wrap: wrap; }
+.overview-meta span { display: flex; align-items: center; gap: 4px; }
+
+.lifecycle { display: flex; align-items: flex-start; gap: 0; margin: 32px 0; padding: 24px 16px; background: var(--bg-paper); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+.lc-step { display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; cursor: pointer; width: 90px; }
+.lc-dot { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 600; border: 2px solid var(--text-muted); color: var(--text-muted); background: var(--bg-paper); position: relative; z-index: 2; transition: all 0.2s; }
+.lc-step.completed .lc-dot { background: var(--color-success); border-color: var(--color-success); color: white; }
+.lc-step.active .lc-dot { background: var(--color-warning); border-color: var(--color-warning); color: white; box-shadow: 0 0 0 4px rgba(196,145,60,0.2); }
+.lc-label { font-size: 0.78rem; color: var(--text-tertiary); text-align: center; font-weight: 500; }
+.lc-step.completed .lc-label { color: var(--color-success); }
+.lc-step.active .lc-label { color: var(--color-warning); font-weight: 600; }
+.lc-line { flex: 1; height: 2px; background: var(--text-muted); min-width: 12px; margin-top: 17px; opacity: 0.3; }
+.lc-line.done { background: var(--color-success); opacity: 1; }
+
+.chapter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.chapter-card { background: var(--bg-paper); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); padding: 20px; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; display: flex; flex-direction: column; }
+.chapter-card:hover { border-color: var(--color-primary-light); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.chapter-card .ch-icon { font-size: 1.5rem; margin-bottom: 10px; }
+.chapter-card .ch-title { font-family: var(--font-serif); font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+.chapter-card .ch-desc { font-size: 0.82rem; color: var(--text-tertiary); line-height: 1.5; margin-bottom: 12px; flex: 1; }
+.chapter-card .ch-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+.chapter-card .ch-link { font-size: 0.82rem; color: var(--color-primary); font-weight: 500; }
+.chapter-card:hover .ch-link { text-decoration: underline; }
+
+/* ============================================================
+   Prototype Page
+   ============================================================ */
+.proto-layout { display: flex; gap: 0; margin: -28px -32px; height: calc(100vh - var(--topbar-height)); }
+.proto-sidebar { width: 240px; padding: 20px; border-right: 1px solid rgba(139,115,85,0.1); overflow-y: auto; flex-shrink: 0; background: var(--bg-paper-warm); }
+.proto-main { flex: 1; padding: 28px 32px; overflow-y: auto; }
+.proto-sidebar h3 { font-size: 0.9rem; margin-bottom: 16px; }
+.proto-list { display: flex; flex-direction: column; gap: 4px; }
+.proto-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.88rem; color: var(--text-secondary); transition: all 0.15s; border-left: 3px solid transparent; }
+.proto-item:hover { background: rgba(139,115,85,0.06); color: var(--text-primary); }
+.proto-item.active { background: rgba(139,115,85,0.1); color: var(--color-primary-dark); border-left-color: var(--color-primary); font-weight: 500; }
+.proto-item .num { width: 22px; height: 22px; border-radius: 50%; background: rgba(139,115,85,0.1); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 600; color: var(--text-tertiary); flex-shrink: 0; }
+.proto-item.active .num { background: var(--color-primary); color: white; }
+
+.wireframe-phone { width: 240px; height: 440px; border: 3px solid #ccc; border-radius: 28px; padding: 10px 8px; display: flex; flex-direction: column; gap: 6px; background: #f8f8f8; margin: 0 auto; box-shadow: var(--shadow-md); }
+.wf-statusbar { height: 14px; background: #e0e0e0; border-radius: 3px; }
+.wf-navbar { height: 36px; background: #e8e4de; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #888; font-weight: 500; }
+.wf-banner { height: 90px; background: linear-gradient(135deg, #d4c4a8 0%, #b8a080 100%); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.wf-banner-title { font-size: 0.78rem; color: #5a4a38; font-weight: 600; }
+.wf-banner-btn { padding: 3px 12px; background: #8B7355; color: white; border-radius: 10px; font-size: 0.6rem; }
+.wf-cards { display: flex; gap: 6px; flex: 1; }
+.wf-card-item { flex: 1; background: #e8e4de; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: #aaa; }
+.wf-tabbar { height: 36px; background: #e8e4de; border-radius: 4px; display: flex; gap: 2px; }
+.wf-tabbar div { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; color: #bbb; }
+
+.module-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+.module-table th, .module-table td { padding: 10px 14px; text-align: left; font-size: 0.85rem; border-bottom: 1px solid rgba(139,115,85,0.08); }
+.module-table th { font-weight: 500; color: var(--text-tertiary); font-size: 0.78rem; background: var(--bg-paper-warm); }
+.interaction-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.interaction-item { display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; color: var(--text-secondary); padding: 8px 12px; background: var(--bg-paper-warm); border-radius: var(--radius-sm); }
+.interaction-item .num-badge { width: 20px; height: 20px; border-radius: 50%; background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; flex-shrink: 0; font-weight: 600; }
+
+/* ============================================================
+   Logic Page
+   ============================================================ */
+.logic-tabs { display: flex; gap: 4px; background: var(--bg-paper-warm); padding: 3px; border-radius: var(--radius-sm); margin-bottom: 24px; width: fit-content; }
+.logic-tab { padding: 8px 20px; border-radius: var(--radius-sm); font-size: 0.88rem; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; font-weight: 500; }
+.logic-tab:hover { color: var(--text-primary); }
+.logic-tab.active { background: var(--color-primary); color: var(--text-inverse); }
+
+.flow-container { padding: 32px; background: var(--bg-paper); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); min-height: 300px; }
+.flow-row { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; }
+.flow-node { padding: 12px 20px; border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 500; text-align: center; min-width: 100px; border: 2px solid; }
+.flow-node-start { background: rgba(91,140,90,0.1); border-color: var(--color-success); color: var(--color-success); border-radius: 20px; }
+.flow-node-normal { background: var(--bg-paper); border-color: var(--color-primary-light); color: var(--text-primary); }
+.flow-node-decision { background: rgba(196,145,60,0.08); border-color: var(--color-warning); color: var(--color-warning); transform: rotate(0deg); border-radius: 4px; font-weight: 600; }
+.flow-node-end { background: rgba(91,123,143,0.1); border-color: var(--color-info); color: var(--color-info); border-radius: 20px; }
+.flow-node-error { background: rgba(192,86,79,0.08); border-color: var(--color-error); color: var(--color-error); }
+.flow-arrow { color: var(--text-muted); font-size: 1.2rem; padding: 0 8px; flex-shrink: 0; }
+.flow-arrow-down { display: flex; justify-content: center; padding: 8px 0; color: var(--text-muted); font-size: 1.2rem; }
+.flow-branch { display: flex; gap: 40px; justify-content: center; margin-top: 8px; }
+.flow-branch-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.flow-branch-label { font-size: 0.75rem; color: var(--text-tertiary); font-weight: 500; padding: 2px 8px; background: var(--bg-paper-warm); border-radius: 10px; }
+
+/* ============================================================
+   PRD Page
+   ============================================================ */
+.prd-layout { display: flex; gap: 0; margin: -28px -32px; height: calc(100vh - var(--topbar-height)); }
+.prd-toc { width: 200px; padding: 20px; border-right: 1px solid rgba(139,115,85,0.1); overflow-y: auto; flex-shrink: 0; background: var(--bg-paper-warm); }
+.prd-content { flex: 1; padding: 32px 40px; overflow-y: auto; background: var(--bg-paper); }
+.prd-aside { width: 280px; padding: 20px; border-left: 1px solid rgba(139,115,85,0.1); overflow-y: auto; flex-shrink: 0; background: var(--bg-paper-warm); }
+
+.prd-toc h3 { font-size: 0.85rem; margin-bottom: 14px; color: var(--text-tertiary); }
+.toc-list { display: flex; flex-direction: column; gap: 2px; }
+.toc-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; font-size: 0.82rem; color: var(--text-secondary); cursor: pointer; border-radius: var(--radius-sm); transition: all 0.15s; }
+.toc-item:hover { background: rgba(139,115,85,0.06); color: var(--text-primary); }
+.toc-item.active { color: var(--color-primary-dark); font-weight: 500; background: rgba(139,115,85,0.1); }
+.toc-item .toc-num { font-size: 0.7rem; color: var(--text-muted); min-width: 16px; }
+
+.prd-doc-title { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+.prd-doc-meta { display: flex; gap: 8px; margin-bottom: 32px; }
+.prd-section { margin-bottom: 28px; }
+.prd-section h3 { font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(139,115,85,0.1); color: var(--color-primary-dark); }
+.prd-section p { font-size: 0.9rem; line-height: 1.8; color: var(--text-secondary); }
+.prd-section ul { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+.prd-section ul li { font-size: 0.88rem; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 8px; line-height: 1.6; }
+.prd-section ol { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; counter-reset: prd-counter; }
+.prd-section ol li { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; counter-increment: prd-counter; display: flex; align-items: flex-start; gap: 8px; }
+.prd-section ol li::before { content: counter(prd-counter); background: var(--color-primary); color: white; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; flex-shrink: 0; margin-top: 3px; }
+
+.prd-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 8px; }
+.prd-table th { padding: 8px 12px; text-align: left; background: var(--bg-paper-warm); font-weight: 500; color: var(--text-tertiary); font-size: 0.78rem; border-bottom: 1px solid rgba(139,115,85,0.12); }
+.prd-table td { padding: 8px 12px; border-bottom: 1px solid rgba(139,115,85,0.06); color: var(--text-secondary); }
+
+.quality-score { text-align: center; padding: 20px; background: var(--bg-paper); border-radius: var(--radius-md); margin-bottom: 16px; }
+.quality-score .score-num { font-size: 2.5rem; font-weight: 700; color: var(--color-primary); font-family: var(--font-serif); }
+.quality-score .score-label { font-size: 0.78rem; color: var(--text-tertiary); margin-top: 2px; }
+.quality-bars { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.quality-bar-item { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; }
+.quality-bar-item .qb-label { width: 60px; color: var(--text-tertiary); }
+.quality-bar-item .qb-bar { flex: 1; height: 6px; background: rgba(0,0,0,0.06); border-radius: 3px; overflow: hidden; }
+.quality-bar-item .qb-fill { height: 100%; border-radius: 3px; background: var(--color-primary); }
+.quality-bar-item .qb-val { width: 32px; text-align: right; color: var(--text-secondary); font-weight: 500; }
+
+.ai-suggestion { display: flex; align-items: flex-start; gap: 8px; padding: 10px; border-radius: var(--radius-sm); background: var(--bg-paper); margin-bottom: 8px; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ============================================================
+   Data Plan Page
+   ============================================================ */
+.north-star { text-align: center; padding: 28px; background: linear-gradient(135deg, var(--bg-paper) 0%, var(--bg-paper-warm) 100%); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: 24px; border: 1px solid rgba(139,115,85,0.1); }
+.north-star .ns-label { font-size: 0.85rem; color: var(--text-tertiary); margin-bottom: 4px; }
+.north-star .ns-value { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; color: var(--color-primary-dark); }
+.north-star .ns-target { font-size: 0.88rem; color: var(--color-success); margin-top: 4px; }
+
+.metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+.metric-card { background: var(--bg-paper); border-radius: var(--radius-md); padding: 18px; box-shadow: var(--shadow-sm); }
+.metric-card h4 { font-size: 0.9rem; font-family: var(--font-serif); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.metric-card ul { display: flex; flex-direction: column; gap: 6px; }
+.metric-card li { font-size: 0.83rem; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+.metric-card li .metric-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+.funnel-visual { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 16px; }
+.funnel-step { display: flex; align-items: center; gap: 12px; width: 100%; }
+.funnel-bar { height: 32px; border-radius: 4px; display: flex; align-items: center; padding: 0 12px; font-size: 0.78rem; color: white; font-weight: 500; transition: width 0.6s ease; }
+.funnel-label { font-size: 0.78rem; color: var(--text-tertiary); width: 80px; text-align: right; flex-shrink: 0; }
+
+.tracking-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.tracking-table th { padding: 10px 12px; text-align: left; background: var(--bg-paper-warm); font-weight: 500; color: var(--text-tertiary); font-size: 0.75rem; border-bottom: 1px solid rgba(139,115,85,0.12); }
+.tracking-table td { padding: 10px 12px; border-bottom: 1px solid rgba(139,115,85,0.06); color: var(--text-secondary); }
+.tracking-table code { font-family: var(--font-mono); font-size: 0.78rem; background: rgba(139,115,85,0.06); padding: 1px 6px; border-radius: 3px; color: var(--color-primary-dark); }
+
+.dashboard-suggestions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+.dashboard-card { background: var(--bg-paper); border-radius: var(--radius-md); padding: 16px; box-shadow: var(--shadow-sm); text-align: center; }
+.dashboard-card .dc-icon { font-size: 1.8rem; margin-bottom: 8px; }
+.dashboard-card .dc-title { font-size: 0.85rem; font-weight: 500; margin-bottom: 4px; }
+.dashboard-card .dc-desc { font-size: 0.75rem; color: var(--text-tertiary); }
+
+/* ============================================================
+   Data Input Page
+   ============================================================ */
+.input-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+.input-header-left h2 { font-family: var(--font-serif); margin-bottom: 6px; }
+.input-header-left p { font-size: 0.88rem; color: var(--text-secondary); }
+.input-header-right { display: flex; gap: 8px; }
+
+.data-table-wrapper { background: var(--bg-paper); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 24px; }
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th { padding: 12px 16px; text-align: left; background: var(--bg-paper-warm); font-size: 0.78rem; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid rgba(139,115,85,0.1); }
+.data-table td { padding: 14px 16px; border-bottom: 1px solid rgba(139,115,85,0.06); font-size: 0.88rem; vertical-align: middle; }
+.data-table tr:hover { background: rgba(139,115,85,0.02); }
+.data-table .metric-name { font-weight: 500; color: var(--text-primary); }
+.data-table .target-val { color: var(--text-tertiary); background: var(--bg-paper-warm); font-family: var(--font-mono); text-align: center; }
+.data-table input[type="text"] { width: 80px; padding: 6px 10px; border: none; border-bottom: 2px solid rgba(139,115,85,0.15); background: transparent; font-family: var(--font-mono); font-size: 0.88rem; text-align: center; color: var(--text-primary); transition: border-color 0.2s; }
+.data-table input[type="text"]:focus { border-bottom-color: var(--color-primary); }
+.data-table .rate-val { font-family: var(--font-mono); font-weight: 600; text-align: center; }
+.data-table .status-cell { text-align: center; }
+
+.input-methods { display: flex; gap: 10px; margin-bottom: 24px; }
+.input-method { flex: 1; padding: 14px; background: var(--bg-paper); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); text-align: center; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+.input-method:hover { border-color: var(--color-primary-light); }
+.input-method.active { border-color: var(--color-primary); background: rgba(139,115,85,0.04); }
+.input-method.disabled { opacity: 0.5; cursor: not-allowed; }
+.input-method .im-icon { font-size: 1.5rem; margin-bottom: 4px; }
+.input-method .im-label { font-size: 0.82rem; font-weight: 500; }
+.input-method .im-desc { font-size: 0.72rem; color: var(--text-tertiary); margin-top: 2px; }
+
+.input-actions { display: flex; justify-content: flex-end; gap: 12px; }
+
+/* ============================================================
+   AI Review Page
+   ============================================================ */
+.review-header { margin-bottom: 28px; }
+.review-header h2 { font-family: var(--font-serif); margin-bottom: 4px; }
+.review-header p { font-size: 0.88rem; color: var(--text-secondary); }
+
+.achievement-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 28px; }
+.achievement-card { background: var(--bg-paper); border-radius: var(--radius-md); padding: 16px 12px; text-align: center; box-shadow: var(--shadow-sm); border-top: 3px solid; }
+.achievement-card.good { border-top-color: var(--color-success); }
+.achievement-card.warn { border-top-color: var(--color-warning); }
+.achievement-card.bad { border-top-color: var(--color-error); }
+.achievement-card .ac-name { font-size: 0.78rem; color: var(--text-tertiary); margin-bottom: 8px; }
+.achievement-card .ac-target { font-size: 0.75rem; color: var(--text-muted); }
+.achievement-card .ac-actual { font-size: 1.5rem; font-weight: 700; font-family: var(--font-serif); margin: 4px 0; }
+.achievement-card.good .ac-actual { color: var(--color-success); }
+.achievement-card.warn .ac-actual { color: var(--color-warning); }
+.achievement-card.bad .ac-actual { color: var(--color-error); }
+.achievement-card .ac-rate { font-size: 0.75rem; margin-top: 4px; }
+.achievement-card .ac-status { font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; margin-top: 6px; display: inline-block; }
+
+.review-funnel { background: var(--bg-paper); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 28px; }
+.review-funnel h3 { font-family: var(--font-serif); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+.funnel-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.funnel-row .fr-label { width: 80px; font-size: 0.78rem; color: var(--text-tertiary); text-align: right; flex-shrink: 0; }
+.funnel-row .fr-bar-wrap { flex: 1; position: relative; }
+.funnel-row .fr-bar { height: 36px; border-radius: 4px; display: flex; align-items: center; padding: 0 12px; font-size: 0.82rem; color: white; font-weight: 600; transition: width 0.8s ease; }
+.funnel-row .fr-stats { width: 120px; font-size: 0.78rem; color: var(--text-secondary); padding-left: 8px; flex-shrink: 0; }
+.funnel-drop { text-align: center; font-size: 0.72rem; color: var(--color-error); padding: 2px 0; margin-left: 92px; }
+
+.ai-conclusion { background: var(--color-ai-bg); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 28px; border-left: 4px solid var(--color-ai); }
+.ai-conclusion h3 { font-family: var(--font-serif); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: var(--color-ai); }
+.ai-conclusion .conclusion-text { font-size: 0.9rem; line-height: 1.8; color: var(--text-primary); }
+.ai-conclusion .conclusion-text strong { color: var(--color-primary-dark); }
+
+.suggestions-list { display: flex; flex-direction: column; gap: 12px; }
+.suggestion-card { background: var(--bg-paper); border-radius: var(--radius-md); padding: 16px 18px; box-shadow: var(--shadow-sm); display: flex; align-items: flex-start; gap: 14px; border-left: 4px solid; }
+.suggestion-card.p0 { border-left-color: var(--color-error); }
+.suggestion-card.p1 { border-left-color: var(--color-warning); }
+.suggestion-card.p2 { border-left-color: var(--color-success); }
+.suggestion-card .sg-priority { font-size: 0.72rem; font-weight: 600; padding: 2px 8px; border-radius: 3px; flex-shrink: 0; }
+.suggestion-card.p0 .sg-priority { background: rgba(192,86,79,0.1); color: var(--color-error); }
+.suggestion-card.p1 .sg-priority { background: rgba(196,145,60,0.1); color: var(--color-warning); }
+.suggestion-card.p2 .sg-priority { background: rgba(91,140,90,0.1); color: var(--color-success); }
+.suggestion-card .sg-content { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; }
+
+/* ============================================================
+   Settings Page
+   ============================================================ */
+.settings-page { max-width: 720px; margin: 0 auto; padding: 40px 20px; }
+.settings-page h2 { font-family: var(--font-serif); margin-bottom: 6px; }
+.settings-page .settings-desc { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 32px; }
+
+.settings-section { background: var(--bg-paper); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 24px; margin-bottom: 20px; }
+.settings-section h3 { font-family: var(--font-serif); font-size: 1rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.settings-section .section-desc { font-size: 0.82rem; color: var(--text-tertiary); margin-bottom: 18px; }
+
+.setting-row { display: flex; align-items: flex-start; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(139,115,85,0.06); }
+.setting-row:last-child { border-bottom: none; padding-bottom: 0; }
+.setting-label { width: 120px; flex-shrink: 0; }
+.setting-label .label-title { font-size: 0.88rem; font-weight: 500; color: var(--text-primary); }
+.setting-label .label-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+.setting-control { flex: 1; }
+
+.token-input-wrap { position: relative; display: flex; gap: 8px; }
+.token-input-wrap input { flex: 1; padding: 9px 14px; background: var(--bg-page); border-radius: var(--radius-sm); font-size: 0.85rem; font-family: var(--font-mono); color: var(--text-primary); border: 1px solid rgba(139,115,85,0.15); transition: border-color 0.2s; }
+.token-input-wrap input:focus { border-color: var(--color-primary); outline: none; }
+.token-input-wrap input::placeholder { color: var(--text-muted); font-family: var(--font-sans); }
+
+.token-status { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; margin-top: 8px; padding: 4px 10px; border-radius: var(--radius-sm); }
+.token-status.valid { background: rgba(91,140,90,0.08); color: var(--color-success); }
+.token-status.empty { background: rgba(139,115,85,0.06); color: var(--text-muted); }
+
+.setting-select { padding: 9px 14px; background: var(--bg-page); border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--text-primary); border: 1px solid rgba(139,115,85,0.15); min-width: 200px; cursor: pointer; }
+.setting-select:focus { border-color: var(--color-primary); outline: none; }
+
+.setting-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 0.88rem; color: var(--text-secondary); }
+.toggle-switch { width: 40px; height: 22px; border-radius: 11px; background: var(--text-muted); position: relative; transition: background 0.2s; flex-shrink: 0; }
+.toggle-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: white; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+.toggle-switch.on { background: var(--color-success); }
+.toggle-switch.on::after { transform: translateX(18px); }
+
+.settings-footer { text-align: center; padding: 12px 0; }
+.settings-footer .version { font-size: 0.75rem; color: var(--text-muted); }
+
+/* Model tags */
+.model-tag {
+  padding: 5px 14px; border-radius: 14px; font-size: 0.8rem; font-weight: 500;
+  background: var(--bg-page); border: 1px solid rgba(139,115,85,0.15);
+  color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
+  font-family: var(--font-mono);
+}
+.model-tag:hover { border-color: var(--color-primary-light); color: var(--text-primary); }
+.model-tag.active { background: var(--color-primary); color: var(--text-inverse); border-color: var(--color-primary); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<!-- ============================================================
+     Modal: 新建需求
+     ============================================================ -->
+<div class="modal-overlay" id="modal-new">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>创建新的需求</h2>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <!-- Tabs -->
+      <div style="display:flex;gap:4px;margin-bottom:18px;background:var(--bg-page);padding:3px;border-radius:var(--radius-sm);">
+        <button class="filter-tab active" style="flex:1;text-align:center;" onclick="switchModalTab(this,0)">一句话输入</button>
+        <button class="filter-tab" style="flex:1;text-align:center;" onclick="switchModalTab(this,1)">粘贴记录</button>
+        <button class="filter-tab" style="flex:1;text-align:center;" onclick="switchModalTab(this,2)">上传材料</button>
+        <button class="filter-tab" style="flex:1;text-align:center;" onclick="switchModalTab(this,3)">选择模板</button>
+      </div>
+      <!-- Tab 0: 一句话输入 -->
+      <div class="modal-tab-panel" data-tab="0">
+        <textarea style="width:100%;height:100px;padding:12px;border:1px solid rgba(139,115,85,0.2);border-radius:var(--radius-sm);font-size:0.95rem;resize:vertical;background:var(--bg-paper-warm);"
+          placeholder="描述你的需求想法...">我想做一个 AI 功能，帮用户更快知道自己现在应该怎么养角色。</textarea>
+      </div>
+      <!-- Tab 1 -->
+      <div class="modal-tab-panel" data-tab="1" style="display:none;">
+        <div style="text-align:center;padding:32px 16px;color:var(--text-muted);">
+          <div style="font-size:2rem;margin-bottom:8px;opacity:0.5;">📋</div>
+          <div style="font-size:0.9rem;font-weight:500;margin-bottom:4px;">粘贴记录</div>
+          <div style="font-size:0.82rem;">即将支持 — 可粘贴聊天记录或会议纪要</div>
+        </div>
+      </div>
+      <!-- Tab 2 -->
+      <div class="modal-tab-panel" data-tab="2" style="display:none;">
+        <div style="text-align:center;padding:32px 16px;color:var(--text-muted);">
+          <div style="font-size:2rem;margin-bottom:8px;opacity:0.5;">📎</div>
+          <div style="font-size:0.9rem;font-weight:500;margin-bottom:4px;">上传材料</div>
+          <div style="font-size:0.82rem;">即将支持 — 可上传 .doc .pdf .png 等文件</div>
+        </div>
+      </div>
+      <!-- Tab 3 -->
+      <div class="modal-tab-panel" data-tab="3" style="display:none;">
+        <div style="text-align:center;padding:32px 16px;color:var(--text-muted);">
+          <div style="font-size:2rem;margin-bottom:8px;opacity:0.5;">📐</div>
+          <div style="font-size:0.9rem;font-weight:500;margin-bottom:4px;">选择模板</div>
+          <div style="font-size:0.82rem;">即将支持 — 提供功能需求、活动需求等模板</div>
+        </div>
+      </div>
+      <!-- AI识别预览 -->
+      <div style="margin-top:18px;padding:14px;background:var(--color-ai-bg);border-radius:var(--radius-sm);border-left:3px solid var(--color-ai);">
+        <div style="font-size:0.8rem;color:var(--color-ai);font-weight:500;margin-bottom:8px;">🤖 AI 初步识别</div>
+        <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">
+          <div>· 需求类型：<strong>功能需求</strong></div>
+          <div>· 可能目标：提升角色养成效率</div>
+          <div>· 待补充：目标用户、使用场景、成功指标</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="closeModal();navigate('/notebook/ai-clarify')">创建并开始梳理 →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   AI Service Layer
+   ============================================================ */
+const PROVIDER_CONFIG = {
+  openai:    { baseUrl: 'https://api.openai.com/v1', defaultModel: 'gpt-4.1', format: 'openai',
+               models: ['gpt-4.1', 'gpt-4.1-mini', 'gpt-5', 'gpt-5-mini', 'o3'] },
+  anthropic: { baseUrl: 'https://api.anthropic.com/v1', defaultModel: 'claude-sonnet-4-6', format: 'anthropic',
+               models: ['claude-sonnet-4-6', 'claude-haiku-4-5', 'claude-opus-4-7', 'claude-opus-4-6', 'claude-sonnet-4-5'] },
+  deepseek:  { baseUrl: 'https://api.deepseek.com', defaultModel: 'deepseek-v4-flash', format: 'openai',
+               models: ['deepseek-v4-flash', 'deepseek-v4-pro'] },
+  custom:    { baseUrl: '', defaultModel: '', format: 'openai', models: [] },
+};
+
+function getAIConfig() {
+  const provider = localStorage.getItem('ai_provider') || 'anthropic';
+  const apiKey = localStorage.getItem('ai_api_key') || '';
+  const model = localStorage.getItem('ai_model') || '';
+  const baseUrl = localStorage.getItem('ai_base_url') || '';
+  const conf = PROVIDER_CONFIG[provider] || PROVIDER_CONFIG.openai;
+  return {
+    provider,
+    apiKey,
+    model: model || conf.defaultModel,
+    baseUrl: (provider === 'custom' && baseUrl) ? baseUrl.replace(/\/+$/, '') : conf.baseUrl,
+    format: conf.format,
+    hasKey: !!apiKey,
+  };
+}
+
+async function callAI(messages, { onChunk, onDone, onError }) {
+  const config = getAIConfig();
+  if (!config.hasKey) { onError('未配置 API Key，请先在设置中填写'); return; }
+
+  const controller = new AbortController();
+  let fullText = '';
+
+  try {
+    let url, headers, body;
+
+    if (config.format === 'anthropic') {
+      url = config.baseUrl + '/messages';
+      headers = {
+        'Content-Type': 'application/json',
+        'x-api-key': config.apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      };
+      const sysMsg = messages.find(m => m.role === 'system');
+      const chatMsgs = messages.filter(m => m.role !== 'system');
+      body = JSON.stringify({
+        model: config.model,
+        max_tokens: 2048,
+        stream: true,
+        system: sysMsg ? sysMsg.content : '',
+        messages: chatMsgs.map(m => ({ role: m.role, content: m.content })),
+      });
+    } else {
+      url = config.baseUrl + '/chat/completions';
+      headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + config.apiKey,
+      };
+      body = JSON.stringify({
+        model: config.model,
+        messages: messages.map(m => ({ role: m.role, content: m.content })),
+        stream: true,
+      });
+    }
+
+    const resp = await fetch(url, { method: 'POST', headers, body, signal: controller.signal });
+
+    if (!resp.ok) {
+      const errText = await resp.text().catch(() => '');
+      let errMsg = `API 请求失败 (${resp.status})`;
+      if (resp.status === 401) errMsg = 'API Key 无效，请在设置中检查';
+      else if (resp.status === 429) errMsg = '请求过于频繁，请稍后再试';
+      else if (resp.status === 0 || errText.includes('CORS') || errText.includes('Failed to fetch'))
+        errMsg = '跨域请求被拦截，请在设置中使用「自定义」模式填写支持跨域的中转地址';
+      try { const j = JSON.parse(errText); if (j.error?.message) errMsg += '：' + j.error.message; } catch(e) {}
+      onError(errMsg);
+      return;
+    }
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || !trimmed.startsWith('data:')) continue;
+        const data = trimmed.slice(5).trim();
+        if (data === '[DONE]') continue;
+
+        try {
+          const json = JSON.parse(data);
+          let token = '';
+          if (config.format === 'anthropic') {
+            if (json.type === 'content_block_delta' && json.delta?.text) token = json.delta.text;
+          } else {
+            token = json.choices?.[0]?.delta?.content || '';
+          }
+          if (token) {
+            fullText += token;
+            onChunk(token, fullText);
+          }
+        } catch (e) { /* skip malformed SSE line */ }
+      }
+    }
+    onDone(fullText);
+  } catch (err) {
+    if (err.name === 'AbortError') return;
+    let msg = '网络请求失败';
+    if (err.message?.includes('Failed to fetch') || err.message?.includes('NetworkError'))
+      msg = '无法连接到 AI 服务。如果使用 OpenAI/Anthropic 官方地址，浏览器可能存在跨域限制，请在设置中使用「自定义」模式填写支持跨域的中转地址';
+    onError(msg);
+  }
+  return controller;
+}
+
+/* ============================================================
+   Clarify Chat State
+   ============================================================ */
+const CLARIFY_SYSTEM_PROMPT = `你是一个资深产品经理助手，专门帮助梳理和完善产品需求。你的工作方式：
+
+1. 根据用户提供的初始需求描述，逐步追问来补全关键信息
+2. 需要覆盖的信息维度包括：目标用户、核心场景、功能范围、非目标（不做的事）、成功指标、异常处理、数据方案
+3. 每次只问 1-2 个问题，保持对话简洁高效
+4. 当某个维度的信息已经足够清晰时，用 ✅ 标注并进入下一个维度
+5. 当所有关键信息都已补全时，给出总结，告知用户需求卡片已基本完善
+6. 用中文回复，语气专业但友好，适当使用 emoji 增加可读性
+7. 如果用户的回答模糊，帮助他们具体化，而不是直接跳过
+
+【重要】每次回复的末尾，你必须输出一段 JSON 状态块（用 \`\`\`json 和 \`\`\` 包裹），格式如下：
+\`\`\`json
+{
+  "dimensions": {
+    "目标用户": { "status": "done|partial|missing", "value": "简要描述" },
+    "核心场景": { "status": "done|partial|missing", "value": "简要描述" },
+    "功能范围": { "status": "done|partial|missing", "value": "简要描述" },
+    "非目标": { "status": "done|partial|missing", "value": "简要描述" },
+    "成功指标": { "status": "done|partial|missing", "value": "简要描述" },
+    "异常处理": { "status": "done|partial|missing", "value": "简要描述" },
+    "数据方案": { "status": "done|partial|missing", "value": "简要描述" }
+  },
+  "card": {
+    "需求名称": "...",
+    "需求背景": "...",
+    "目标用户": "...",
+    "核心场景": "...",
+    "核心目标": "...",
+    "功能范围": "...",
+    "非目标": "...",
+    "成功指标": "...",
+    "主要风险": "..."
+  },
+  "completeness": 0-100,
+  "isComplete": false
+}
+\`\`\`
+- status 规则：已明确填写=done，部分信息=partial，完全缺失=missing
+- completeness：根据 7 个维度的完成情况估算 0-100 的百分比
+- isComplete：当你认为需求卡片已基本完善（completeness>=80）时设为 true
+- card 中的字段，如果还未获得信息则填 ""（空字符串）
+- 这个 JSON 块不会显示给用户看，仅用于前端解析更新UI`;
+
+// 初始 Mock 对话（作为示例 & 兜底）
+const MOCK_CHAT_MESSAGES = [
+  { role: 'user', content: '我想做一个 AI 功能，帮用户更快知道自己现在应该怎么养角色。' },
+  { role: 'assistant', content: '收到你的需求想法！我来帮你一步步梳理清楚。先确认几个关键信息——这个AI养成建议功能，主要服务哪类玩家？' },
+  { role: 'user', content: '主要是不太懂怎么养角色的新手和回流玩家，他们容易走弯路浪费资源。' },
+  { role: 'assistant', content: '明白了，目标用户锁定为「中低理解门槛玩家」。那用户是在什么场景下使用这个功能？从哪里进入？' },
+  { role: 'user', content: '在角色页面，加一个AI建议的入口，用户点击后读取他的角色数据，给出养成建议。' },
+  { role: 'assistant', content: '好的，入口确认在角色页。关于输出结果，你希望AI给出哪些具体内容？首期有什么不做的吗？' },
+  { role: 'user', content: '养成优先级排序、推荐阵容、资源投入建议。首期不做战斗模拟和攻略库。' },
+  { role: 'assistant', content: '需求范围已经很清晰了！✨ 还有几个问题：\n1. 如果角色数据不完整怎么办？\n2. 成功指标看什么？\n3. 对AI生成时间有要求吗？' },
+  { role: 'user', content: '数据不完整就提示补充。指标看点击率、生成成功率、结果页查看率和采纳率。生成控制在10秒内。' },
+  { role: 'assistant', content: '需求卡片已基本完善 ✨ 右侧可查看结构化结果。建议下一步：生成原型方案。当前完成度：**75%**' },
+];
+
+let clarifyMessages = [...MOCK_CHAT_MESSAGES];
+let isAIResponding = false;
+
+// 需求卡片状态追踪
+let clarifyState = {
+  dimensions: {
+    '目标用户': { status: 'done', value: '中低理解门槛玩家、回流玩家、新区玩家' },
+    '核心场景': { status: 'done', value: '用户进入角色页后，希望获得养成建议' },
+    '功能范围': { status: 'done', value: '养成优先级、阵容建议、资源投入建议' },
+    '非目标':   { status: 'partial', value: '不做战斗模拟、不做人工客服' },
+    '成功指标': { status: 'partial', value: '点击率、生成成功率、查看率' },
+    '异常处理': { status: 'missing', value: '' },
+    '数据方案': { status: 'missing', value: '' },
+  },
+  card: {
+    '需求名称': 'AI 角色养成建议助手',
+    '需求背景': '玩家在角色养成时不知道资源优先投给谁，容易走弯路',
+    '目标用户': '中低理解门槛玩家、回流玩家、新区玩家',
+    '核心场景': '用户进入角色页后，希望获得当前账号下一步养成建议',
+    '核心目标': '降低理解成本，提高角色养成决策效率',
+    '功能范围': '读取角色数据、养成优先级、阵容建议、资源投入建议',
+    '非目标': '首期不做复杂战斗模拟，不做人工客服，不做全量攻略库',
+    '成功指标': '点击率、生成成功率、查看率、采纳率',
+    '主要风险': '数据不完整导致建议不准；AI结果过泛；玩家不信任',
+  },
+  completeness: 65,
+  isComplete: false,
+};
+
+// 从 AI 回复中解析 JSON 状态块
+function parseAIStateBlock(text) {
+  const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```/);
+  if (!jsonMatch) return null;
+  try {
+    return JSON.parse(jsonMatch[1]);
+  } catch(e) {
+    return null;
+  }
+}
+
+// 从 AI 回复中移除 JSON 块（不展示给用户）
+function stripStateBlock(text) {
+  return text.replace(/\s*```json\s*[\s\S]*?\s*```\s*$/, '').trim();
+}
+
+// 更新 UI：需求卡片字段 + 进度条
+function updateClarifyUI(newState) {
+  if (!newState) return;
+  // 合并状态
+  if (newState.dimensions) clarifyState.dimensions = newState.dimensions;
+  if (newState.card) {
+    Object.keys(newState.card).forEach(k => {
+      if (newState.card[k]) clarifyState.card[k] = newState.card[k];
+    });
+  }
+  if (typeof newState.completeness === 'number') clarifyState.completeness = newState.completeness;
+  if (typeof newState.isComplete === 'boolean') clarifyState.isComplete = newState.isComplete;
+
+  // 更新完成度进度条
+  const progressBar = document.getElementById('clarify-progress-bar');
+  const progressText = document.getElementById('clarify-progress-text');
+  if (progressBar) {
+    progressBar.style.width = clarifyState.completeness + '%';
+    progressBar.style.background = clarifyState.completeness >= 80 ? 'var(--color-success)' : 'var(--color-primary)';
+  }
+  if (progressText) progressText.textContent = clarifyState.completeness + '%';
+
+  // 更新需求卡片字段（统一面板）
+  const cardContainer = document.getElementById('req-card-dynamic');
+  if (cardContainer) {
+    const fieldKeys = ['需求名称','需求背景','目标用户','核心场景','核心目标','功能范围','非目标','成功指标','主要风险'];
+    let cardHTML = '';
+    fieldKeys.forEach(key => {
+      const val = clarifyState.card[key] || '';
+      const filled = val.length > 0;
+      const dimKey = {'需求名称':'','需求背景':'','目标用户':'目标用户','核心场景':'核心场景','核心目标':'','功能范围':'功能范围','非目标':'非目标','成功指标':'成功指标','主要风险':'异常处理'}[key];
+      const dimStatus = dimKey && clarifyState.dimensions[dimKey] ? clarifyState.dimensions[dimKey].status : (filled ? 'done' : 'missing');
+      const statusDot = { done: '🟢', partial: '🟡', missing: '⚪' }[dimStatus] || '⚪';
+      cardHTML += `<div class="req-field-row ${filled ? 'field-filled' : 'field-empty'}">
+        <div class="req-field-header">
+          <span class="req-field-dot">${statusDot}</span>
+          <span class="req-field-label">${key}</span>
+        </div>
+        <div class="req-field-value" style="${filled ? '' : 'color:var(--text-muted);font-style:italic;font-size:0.82rem;'}">${filled ? val : '等待对话补充…'}</div>
+      </div>`;
+    });
+    cardContainer.innerHTML = cardHTML;
+  }
+
+  // 更新侧边栏状态
+  updateSidebarStatus();
+
+  // 如果已完成，触发盖章动画
+  if (clarifyState.isComplete && !document.getElementById('stamp-overlay')) {
+    triggerStampAnimation();
+  }
+}
+
+// 更新侧边栏导航状态
+function updateSidebarStatus() {
+  const dots = document.querySelectorAll('.nb-sidebar-item .status-dot');
+  if (dots.length > 0 && clarifyState.isComplete) {
+    dots[0].className = 'status-dot done'; // 需求梳理变为已完成
+  }
+}
+
+// 盖章动画
+function triggerStampAnimation() {
+  const overlay = document.createElement('div');
+  overlay.id = 'stamp-overlay';
+  overlay.innerHTML = `
+    <div class="stamp-container">
+      <div class="stamp-badge">
+        <div class="stamp-inner">
+          <div class="stamp-text-top">需求梳理</div>
+          <div class="stamp-check">✓</div>
+          <div class="stamp-text-bottom">已完成</div>
+        </div>
+      </div>
+      <div class="stamp-congrats">需求卡片已完善，可进入下一步了</div>
+      <button class="btn btn-primary stamp-btn" onclick="dismissStamp()">继续 →</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  // 播放音效（简单版用 CSS 动画代替）
+  setTimeout(() => overlay.classList.add('stamp-visible'), 50);
+}
+
+function dismissStamp() {
+  const overlay = document.getElementById('stamp-overlay');
+  if (overlay) {
+    overlay.classList.remove('stamp-visible');
+    setTimeout(() => overlay.remove(), 300);
+  }
+}
+
+function renderMessageHTML(role, text) {
+  // 将 assistant 角色映射到 ai 样式
+  const cls = role === 'user' ? 'user' : 'ai';
+  const avatar = role === 'user' ? '👤' : '🤖';
+  // 简单的 markdown → HTML：**bold**, \n→<br>
+  const html = text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+  return `<div class="msg msg-${cls}">
+    <div class="msg-avatar">${avatar}</div>
+    <div class="msg-bubble">${html}</div>
+  </div>`;
+}
+
+function appendMessage(role, text, opts = {}) {
+  const chatArea = document.getElementById('clarify-chat-area');
+  if (!chatArea) return null;
+  const cls = role === 'user' ? 'user' : 'ai';
+  const avatar = role === 'user' ? '👤' : '🤖';
+  const div = document.createElement('div');
+  div.className = `msg msg-${cls}` + (opts.loading ? ' msg-loading' : '') + (opts.error ? ' msg-error' : '');
+  const html = text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+  div.innerHTML = `<div class="msg-avatar">${opts.error ? '⚠' : avatar}</div><div class="msg-bubble">${html}</div>`;
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+  return div;
+}
+
+function updateMessageBubble(msgDiv, text) {
+  const bubble = msgDiv.querySelector('.msg-bubble');
+  if (!bubble) return;
+  bubble.innerHTML = text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+  const chatArea = document.getElementById('clarify-chat-area');
+  if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function setChatInputState(disabled) {
+  const input = document.getElementById('clarify-input');
+  const btn = document.getElementById('clarify-send-btn');
+  if (input) input.disabled = disabled;
+  if (btn) btn.disabled = disabled;
+}
+
+async function sendClarifyMessage() {
+  const input = document.getElementById('clarify-input');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text || isAIResponding) return;
+
+  // 追加用户消息
+  input.value = '';
+  clarifyMessages.push({ role: 'user', content: text });
+  appendMessage('user', text);
+
+  // 更新对话计数
+  const countEl = document.getElementById('clarify-msg-count');
+  if (countEl) countEl.textContent = `共 ${clarifyMessages.length} 条对话`;
+
+  // 开始 AI 响应
+  isAIResponding = true;
+  setChatInputState(true);
+  const aiDiv = appendMessage('assistant', '', { loading: true });
+
+  const messages = [
+    { role: 'system', content: CLARIFY_SYSTEM_PROMPT },
+    ...clarifyMessages,
+  ];
+
+  await callAI(messages, {
+    onChunk(token, fullText) {
+      if (aiDiv) {
+        aiDiv.classList.remove('msg-loading');
+        // 不展示 JSON 块给用户
+        updateMessageBubble(aiDiv, stripStateBlock(fullText));
+      }
+    },
+    onDone(fullText) {
+      if (aiDiv) aiDiv.classList.remove('msg-loading');
+      // 解析状态块并更新 UI
+      const stateBlock = parseAIStateBlock(fullText);
+      const displayText = stripStateBlock(fullText);
+      updateMessageBubble(aiDiv, displayText);
+      clarifyMessages.push({ role: 'assistant', content: fullText });
+      if (countEl) countEl.textContent = `共 ${clarifyMessages.length} 条对话`;
+      isAIResponding = false;
+      setChatInputState(false);
+      const inp = document.getElementById('clarify-input');
+      if (inp) inp.focus();
+      // 更新联动 UI
+      if (stateBlock) updateClarifyUI(stateBlock);
+    },
+    onError(errMsg) {
+      if (aiDiv) aiDiv.remove();
+      appendMessage('assistant', errMsg, { error: true });
+      isAIResponding = false;
+      setChatInputState(false);
+    },
+  });
+}
+
+/* ============================================================
+   Data
+   ============================================================ */
+const NOTEBOOKS = [
+  { id: 1, title: 'AI角色养成建议助手', stage: '需求梳理中', stageKey: 'clarify', priority: 'P1', progress: 65, risk: '需求卡片待完善', riskLevel: 'warning', color: 'brown', date: '2026-05-28', year: 2026, quarter: 'Q2', clickable: true },
+  { id: 2, title: '新手引导流程优化', stage: '已上线', stageKey: 'online', priority: 'P0', progress: 95, risk: '', riskLevel: '', color: 'green', date: '2025-07-04', year: 2025, quarter: 'Q3' },
+  { id: 3, title: '社区分享功能', stage: '原型设计中', stageKey: 'design', priority: 'P1', progress: 40, risk: '目标用户待确认', riskLevel: 'warning', color: 'blue', date: '2025-07-05', year: 2025, quarter: 'Q3' },
+  { id: 4, title: '背包系统改版', stage: '需求梳理中', stageKey: 'clarify', priority: 'P2', progress: 20, risk: '范围待收敛', riskLevel: 'error', color: 'orange', date: '2025-04-03', year: 2025, quarter: 'Q2' },
+  { id: 5, title: '付费弹窗优化', stage: '已复盘', stageKey: 'review', priority: 'P0', progress: 100, risk: '', riskLevel: '', color: 'red', date: '2025-03-28', year: 2025, quarter: 'Q1' },
+  { id: 6, title: '赛季排行榜', stage: '数据方案中', stageKey: 'dev', priority: 'P1', progress: 60, risk: '埋点清单未确认', riskLevel: 'warning', color: 'teal', date: '2025-05-01', year: 2025, quarter: 'Q2' },
+  { id: 7, title: '登录流程改版', stage: '已上线', stageKey: 'online', priority: 'P0', progress: 100, risk: '', riskLevel: '', color: 'green', date: '2024-11-15', year: 2024, quarter: 'Q4' },
+  { id: 8, title: '新手礼包优化', stage: '已复盘', stageKey: 'review', priority: 'P1', progress: 100, risk: '', riskLevel: '', color: 'red', date: '2024-09-20', year: 2024, quarter: 'Q3' },
+  { id: 9, title: '春节限定活动系统', stage: '需求梳理中', stageKey: 'clarify', priority: 'P0', progress: 15, risk: '', riskLevel: '', color: 'orange', date: '2026-01-10', year: 2026, quarter: 'Q1' },
+  { id: 10, title: '跨服竞技场', stage: '原型设计中', stageKey: 'design', priority: 'P1', progress: 35, risk: '', riskLevel: '', color: 'blue', date: '2026-01-18', year: 2026, quarter: 'Q1' },
+  { id: 11, title: '好友系统2.0', stage: 'PRD编写中', stageKey: 'dev', priority: 'P1', progress: 50, risk: '', riskLevel: '', color: 'brown', date: '2026-02-05', year: 2026, quarter: 'Q1' },
+  { id: 12, title: '通行证商业化', stage: '需求梳理中', stageKey: 'clarify', priority: 'P0', progress: 10, risk: '', riskLevel: '', color: 'teal', date: '2026-04-02', year: 2026, quarter: 'Q2' },
+];
+
+const SIDEBAR_ITEMS = [
+  { icon: '📋', label: '需求梳理', route: '/notebook/ai-clarify', get status() { return clarifyState.isComplete ? 'done' : 'current'; } },
+  { icon: '📐', label: '原型方案', route: '/notebook/prototype', get status() { return clarifyState.isComplete ? 'current' : 'pending'; } },
+  { icon: '🔀', label: '逻辑图',   route: '/notebook/logic',     get status() { return 'pending'; } },
+  { icon: '📄', label: 'PRD文档',  route: '/notebook/prd',       get status() { return 'pending'; } },
+  { icon: '📈', label: '数据方案', route: '/notebook/data-plan',  get status() { return 'pending'; } },
+  { icon: '📝', label: '数据录入', route: '/notebook/data-input', get status() { return 'pending'; } },
+  { icon: '🔍', label: 'AI复盘',   route: '/notebook/ai-review', get status() { return 'pending'; } },
+];
+
+const FILTERS = ['全部','梳理中','设计中','开发中','已上线','已复盘'];
+const FILTER_STAGE_MAP = { '全部': null, '梳理中': 'clarify', '设计中': 'design', '开发中': 'dev', '已上线': 'online', '已复盘': 'review' };
+let currentFilter = '全部';
+const _now = new Date();
+let currentYear = String(_now.getFullYear());
+let currentQuarter = 'Q' + (Math.floor(_now.getMonth() / 3) + 1);
+
+/* ============================================================
+   Router
+   ============================================================ */
+const routes = {
+  '/':                     renderShelf,
+  '/settings':             renderSettings,
+  '/notebook/ai-clarify':  renderAIClarify,
+  '/notebook/overview':    renderOverview,
+  '/notebook/prototype':   renderPrototype,
+  '/notebook/logic':       renderLogic,
+  '/notebook/prd':         renderPRD,
+  '/notebook/data-plan':   renderDataPlan,
+  '/notebook/data-input':  renderDataInput,
+  '/notebook/ai-review':   renderAIReview,
+};
+
+function navigate(hash) { window.location.hash = hash; }
+
+function getRoute() { return window.location.hash.slice(1) || '/'; }
+
+function handleRoute() {
+  const hash = getRoute();
+  const render = routes[hash];
+  if (render) {
+    render();
+  } else {
+    renderShelf();
+  }
+}
+
+window.addEventListener('hashchange', handleRoute);
+window.addEventListener('DOMContentLoaded', handleRoute);
+
+/* ============================================================
+   Helpers
+   ============================================================ */
+function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+function $$(sel, ctx) { return (ctx || document).querySelectorAll(sel); }
+
+function priorityClass(p) {
+  if (p === 'P0') return 'tag-error';
+  if (p === 'P1') return 'tag-warning';
+  return 'tag-muted';
+}
+
+/* ============================================================
+   PM Profile
+   ============================================================ */
+function getPMProfile() {
+  return {
+    name: localStorage.getItem('pm_name') || '',
+    bio: localStorage.getItem('pm_bio') || '',
+    avatar: localStorage.getItem('pm_avatar') || '',
+  };
+}
+
+function renderPMProfile() {
+  const p = getPMProfile();
+  const hasProfile = p.name || p.bio || p.avatar;
+
+  if (!hasProfile) {
+    return `
+      <div class="pm-profile">
+        <div class="pm-avatar-wrap">
+          <div class="pm-avatar">👤</div>
+        </div>
+        <div class="pm-info">
+          <div class="pm-name" style="color:var(--text-muted);">未设置</div>
+          <div class="pm-bio">前往 <a style="color:var(--color-primary);cursor:pointer;" onclick="navigate('/settings')">设置</a> 编辑个人信息</div>
+        </div>
+      </div>`;
+  }
+
+  const avatarHTML = p.avatar
+    ? `<img src="${p.avatar}" alt="avatar">`
+    : (p.name ? p.name.slice(0, 1) : '👤');
+
+  return `
+    <div class="pm-profile">
+      <div class="pm-avatar-wrap">
+        <div class="pm-avatar">${avatarHTML}</div>
+      </div>
+      <div class="pm-info">
+        <div class="pm-name">${p.name || '未命名'}</div>
+        ${p.bio ? `<div class="pm-bio">${p.bio}</div>` : ''}
+      </div>
+    </div>`;
+}
+
+function editPMProfile() {
+  navigate('/settings');
+}
+
+function handleAvatarUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) {
+    alert('请选择图片文件');
+    return;
+  }
+  if (file.size > 2 * 1024 * 1024) {
+    alert('图片大小不能超过 2MB');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataURL = e.target.result;
+    document.getElementById('pm-edit-avatar').value = dataURL;
+    const preview = document.getElementById('pm-avatar-preview');
+    if (preview) {
+      preview.innerHTML = `<img src="${dataURL}" alt="preview" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+      preview.style.borderStyle = 'solid';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function savePMProfile() {
+  const name = (document.getElementById('pm-edit-name').value || '').trim().slice(0, 20);
+  const bio = (document.getElementById('pm-edit-bio').value || '').trim().slice(0, 80);
+  const avatar = (document.getElementById('pm-edit-avatar').value || '').trim();
+
+  localStorage.setItem('pm_name', name);
+  localStorage.setItem('pm_bio', bio);
+  localStorage.setItem('pm_avatar', avatar);
+
+  // 刷新设置页中的预览
+  const previewWrap = document.getElementById('pm-settings-preview');
+  if (previewWrap) {
+    const avatarHTML = avatar
+      ? `<img src="${avatar}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
+      : (name ? `<span style="font-size:1.2rem;">${name.slice(0,1)}</span>` : '👤');
+    previewWrap.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg-page);border-radius:var(--radius-sm);">
+        <div style="width:42px;height:42px;border-radius:50%;background:var(--bg-paper-warm);border:2px solid rgba(139,115,85,0.15);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">${avatarHTML}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:var(--font-serif);font-size:0.92rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${name || '未命名'}</div>
+          ${bio ? `<div style="font-size:0.78rem;color:var(--text-tertiary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${bio}</div>` : ''}
+        </div>
+      </div>`;
+  }
+
+  alert('个人信息已保存');
+}
+
+function cancelPMEdit() {
+  navigate('/settings');
+}
+
+/* ============================================================
+   Modal
+   ============================================================ */
+function toggleSidebar() {
+  const sidebar = document.getElementById('nb-sidebar');
+  if (!sidebar) return;
+  sidebar.classList.toggle('collapsed');
+}
+
+function togglePanel(id) {
+  const panel = document.getElementById(id);
+  if (!panel) return;
+  const btn = panel.querySelector('.panel-toggle');
+  panel.classList.toggle('collapsed');
+  const isCollapsed = panel.classList.contains('collapsed');
+  if (id === 'clarify-right') {
+    btn.textContent = isCollapsed ? '◀' : '▶';
+  } else {
+    btn.textContent = isCollapsed ? '▶' : '◀';
+  }
+}
+
+function openModal() { $('#modal-new').classList.add('show'); }
+function closeModal() { $('#modal-new').classList.remove('show'); }
+
+// Close on overlay click
+$('#modal-new').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function switchModalTab(btn, idx) {
+  $$('#modal-new .filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  $$('#modal-new .modal-tab-panel').forEach(p => p.style.display = 'none');
+  $$('#modal-new .modal-tab-panel')[idx].style.display = '';
+}
+
+function switchClarifyTab(btn, idx) {
+  const right = document.getElementById('clarify-right');
+  if (!right) return;
+  right.querySelectorAll('.clarify-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  right.querySelectorAll('.clarify-tab-panel').forEach(p => p.style.display = 'none');
+  right.querySelectorAll('.clarify-tab-panel')[idx].style.display = '';
+}
+
+/* ============================================================
+   Render: Notebook Layout Wrapper
+   ============================================================ */
+function renderNotebookLayout(pageKey, contentHTML, breadcrumbPage) {
+  const app = $('#app');
+  const sidebarHTML = SIDEBAR_ITEMS.map(item => {
+    const active = item.route === '/' + pageKey.replace(/^\//, '') ? 'active' :
+                   ('/notebook/' + pageKey.split('/').pop()) === item.route ? 'active' : '';
+    const isActive = item.route === getRoute();
+    return `
+      <div class="nb-sidebar-item ${isActive ? 'active' : ''}" onclick="navigate('${item.route}')">
+        <span class="icon">${item.icon}</span>
+        <span class="label">${item.label}</span>
+        <span class="status-dot ${item.status}"></span>
+      </div>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="nb-topbar">
+      <div class="nb-topbar-left">
+        <button class="back-btn" onclick="navigate('/')">← 书架</button>
+        <div class="breadcrumb">
+          <span>/</span> AI角色养成建议助手 <span>/</span> ${breadcrumbPage || ''}
+        </div>
+      </div>
+      <div class="nb-topbar-center">AI 角色养成建议助手</div>
+      <div class="nb-topbar-right">
+        <button class="btn btn-sm btn-secondary" onclick="navigate('/notebook/overview')">📊 总览</button>
+      </div>
+    </div>
+    <div class="nb-layout" id="nb-layout">
+      <nav class="nb-sidebar" id="nb-sidebar">
+        <div class="nb-sidebar-title">需求章节</div>
+        <div class="nb-sidebar-nav">${sidebarHTML}</div>
+        <button class="sidebar-collapse-btn" onclick="toggleSidebar()" title="收起侧边栏">◀</button>
+        <button class="sidebar-expand-btn" onclick="toggleSidebar()" title="展开侧边栏">▶</button>
+      </nav>
+      <main class="nb-main page-enter">
+        ${contentHTML}
+      </main>
+    </div>`;
+}
+
+function placeholder(icon, title) {
+  return `<div class="page-placeholder">
+    <div class="ph-icon">${icon}</div>
+    <h2>${title}</h2>
+    <p class="text-tertiary">该页面内容正在构建中…</p>
+  </div>`;
+}
+
+/* ============================================================
+   Page 1: 书架首页
+   ============================================================ */
+function getFilteredBooks() {
+  let books = NOTEBOOKS;
+  const stageKey = FILTER_STAGE_MAP[currentFilter];
+  if (stageKey) books = books.filter(nb => nb.stageKey === stageKey);
+  if (currentYear !== 'all') books = books.filter(nb => nb.year === parseInt(currentYear));
+  if (currentQuarter !== 'all') books = books.filter(nb => nb.quarter === currentQuarter);
+  return books;
+}
+
+function renderBookCards(books) {
+  return books.map(nb => {
+    const isClickable = nb.id === 1;
+    const cardStyle = isClickable ? 'cursor:pointer;' : 'cursor:default;opacity:0.7;';
+    const onclick = isClickable ? `onclick="navigate('/notebook/ai-clarify')"` : '';
+    return `
+    <div class="book-card" data-color="${nb.color}" ${onclick} style="${cardStyle}">
+      <div class="book-card-body">
+        <div class="book-card-title">${nb.title}</div>
+        <div class="book-card-meta">
+          <span class="tag tag-info">${nb.stage}</span>
+          ${!isClickable ? '<span class="tag tag-muted" style="font-size:0.7rem;">演示中</span>' : ''}
+        </div>
+        <div class="book-card-progress">
+          <div class="book-card-progress-bar"><div class="book-card-progress-fill" style="width:${nb.progress}%"></div></div>
+          <div class="book-card-progress-text"><span>完成度</span><span>${nb.progress}%</span></div>
+        </div>
+      </div>
+      <div class="book-card-footer">
+        <span>${nb.date}</span>
+        <span class="text-mono">#${nb.id}</span>
+      </div>
+    </div>`;
+  }).join('') || '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">当季暂无需求，点击右上角「＋ 新建需求」开始</div>';
+}
+
+function refreshBookGrid() {
+  const grid = document.querySelector('.book-grid');
+  if (grid) grid.innerHTML = renderBookCards(getFilteredBooks());
+}
+
+function applyFilter(filterLabel) {
+  currentFilter = filterLabel;
+  document.querySelectorAll('.filter-bar .filter-tab').forEach(t => {
+    t.classList.toggle('active', t.textContent === filterLabel);
+  });
+  refreshBookGrid();
+}
+
+function onYearChange(sel) {
+  currentYear = sel.value;
+  refreshBookGrid();
+}
+
+function onQuarterChange(sel) {
+  currentQuarter = sel.value;
+  refreshBookGrid();
+}
+
+function renderShelf() {
+  const cardsHTML = renderBookCards(getFilteredBooks());
+
+  const filtersHTML = FILTERS.map(f =>
+    `<button class="filter-tab ${f === currentFilter ? 'active' : ''}" onclick="applyFilter('${f}')">${f}</button>`
+  ).join('');
+
+  // 从数据中提取可用年份，降序
+  const years = [...new Set(NOTEBOOKS.map(nb => nb.year))].sort((a, b) => b - a);
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}/${String(today.getMonth()+1).padStart(2,'0')}/${String(today.getDate()).padStart(2,'0')}`;
+  const weekDay = ['日','一','二','三','四','五','六'][today.getDay()];
+
+  const yearOptions = `<option value="all"${ currentYear === 'all' ? ' selected' : '' }>全部年份</option>` +
+    years.map(y => `<option value="${y}"${ currentYear == y ? ' selected' : '' }>${y}年</option>`).join('');
+  const quarterOptions = `<option value="all"${ currentQuarter === 'all' ? ' selected' : '' }>全部季度</option>` +
+    ['Q1','Q2','Q3','Q4'].map(q => `<option value="${q}"${ currentQuarter === q ? ' selected' : '' }>${q}</option>`).join('');
+
+  $('#app').innerHTML = `
+    <div class="topbar">
+      <div class="topbar-logo">产品需求手账</div>
+      <div class="topbar-actions">
+        <div class="topbar-search">
+          <span style="color:var(--text-muted)">🔍</span>
+          <input placeholder="搜索需求…">
+        </div>
+        <button class="btn btn-primary" onclick="openModal()">＋ 新建需求</button>
+        <button class="btn btn-ghost btn-sm" onclick="navigate('/settings')" title="设置" style="font-size:1.1rem;padding:6px 8px;">⚙️</button>
+      </div>
+    </div>
+    <div class="filter-bar">
+      <div class="filter-period">
+        <select onchange="onYearChange(this)">${yearOptions}</select>
+        <select onchange="onQuarterChange(this)">${quarterOptions}</select>
+      </div>
+      <div class="filter-divider"></div>
+      <div class="filter-tabs">${filtersHTML}</div>
+      <span class="filter-date">📅 ${dateStr} 周${weekDay}</span>
+    </div>
+    <div class="shelf-layout page-enter">
+      <div class="shelf-main">
+        <div class="book-grid">${cardsHTML}</div>
+      </div>
+      <aside class="shelf-aside">
+        <div class="aside-card" id="pm-profile-card">
+          ${renderPMProfile()}
+        </div>
+        <div class="aside-card">
+          <h3 class="text-serif">🗺️ 本周探索地图</h3>
+          <div class="treasure-map">
+            <div class="tm-node done">
+              <div class="tm-icon">📋</div>
+              <div class="tm-body">
+                <div class="tm-title">新增 2 个需求</div>
+                <div class="tm-detail">✅ 已录入需求</div>
+              </div>
+            </div>
+            <div class="tm-node done">
+              <div class="tm-icon">🤖</div>
+              <div class="tm-body">
+                <div class="tm-title">AI 梳理 3 个需求</div>
+                <div class="tm-detail">✅ 需求卡片已生成</div>
+              </div>
+            </div>
+            <div class="tm-node active">
+              <div class="tm-icon">📐</div>
+              <div class="tm-body">
+                <div class="tm-title">完善 2 个原型方案</div>
+                <div class="tm-detail">🔄 进行中…</div>
+              </div>
+            </div>
+            <div class="tm-node active">
+              <div class="tm-icon">📄</div>
+              <div class="tm-body">
+                <div class="tm-title">推进 1 个 PRD 评审</div>
+                <div class="tm-detail">🔄 待开发确认</div>
+              </div>
+            </div>
+            <div class="tm-node todo">
+              <div class="tm-icon">🚀</div>
+              <div class="tm-body">
+                <div class="tm-title">上线验收</div>
+                <div class="tm-detail">⏳ 本周待完成</div>
+              </div>
+            </div>
+            <div class="tm-node todo">
+              <div class="tm-icon">🏆</div>
+              <div class="tm-body">
+                <div class="tm-title">生成周报</div>
+                <div class="tm-detail">⏳ 周五自动汇总</div>
+              </div>
+            </div>
+          </div>
+          <div class="tm-treasure">本周已探索 4/6 个节点，继续推进就能解锁周报宝藏！</div>
+        </div>
+      </aside>
+    </div>`;
+}
+
+/* ============================================================
+   Page 2: Modal — already in HTML above
+   ============================================================ */
+
+/* ============================================================
+   Page 3: AI 需求梳理
+   ============================================================ */
+function renderAIClarify() {
+  const aiConfig = getAIConfig();
+
+  // 渲染历史对话（从 clarifyMessages 全局状态）
+  const chatHTML = clarifyMessages.map(m => renderMessageHTML(m.role, m.content)).join('');
+
+  // 输入栏：有 Key → 可输入；无 Key → 提示去设置
+  let inputBarHTML;
+  if (aiConfig.hasKey) {
+    inputBarHTML = `
+      <input id="clarify-input" placeholder="描述你的需求，AI 帮你梳理…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendClarifyMessage();}">
+      <button class="chat-send-btn" id="clarify-send-btn" onclick="sendClarifyMessage()">发送</button>`;
+  } else {
+    inputBarHTML = `
+      <div class="chat-no-key">
+        <span>⚠️ AI 对话需要配置 API Key</span>
+        <a onclick="navigate('/settings')">前往设置 →</a>
+      </div>`;
+  }
+
+  // 渲染需求字段（合并面板，序号标注 + 可编辑）
+  const reqFieldKeys = ['需求名称','需求背景','目标用户','核心场景','核心目标','功能范围','非目标','成功指标','主要风险'];
+  const reqFieldsHTML = reqFieldKeys.map((key, idx) => {
+    const val = clarifyState.card[key] || '';
+    const filled = val.length > 0;
+    const dimKey = {'需求名称':'','需求背景':'','目标用户':'目标用户','核心场景':'核心场景','核心目标':'','功能范围':'功能范围','非目标':'非目标','成功指标':'成功指标','主要风险':'异常处理'}[key];
+    const dimStatus = dimKey && clarifyState.dimensions[dimKey] ? clarifyState.dimensions[dimKey].status : (filled ? 'done' : 'missing');
+    const numCls = dimStatus === 'done' ? 'num-done' : dimStatus === 'partial' ? 'num-partial' : 'num-missing';
+    return `<div class="req-field-row ${filled ? 'field-filled' : 'field-empty'}">
+      <div class="req-field-header">
+        <span class="req-field-num ${numCls}">${idx + 1}</span>
+        <span class="req-field-label">${key}</span>
+      </div>
+      <div class="req-field-value-wrap">
+        <div class="req-field-value" contenteditable="true" data-field="${key}" data-placeholder="点击填写${key}…" oninput="onFieldEdit(this, '${key}')" onblur="onFieldBlur(this, '${key}')">${filled ? val : ''}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const content = `
+    <div class="clarify-layout">
+      <!-- Left: Chat (main area) -->
+      <div class="clarify-center">
+        <div class="chat-header">
+          <span>🤖</span> AI 需求追问
+          <span class="tag tag-ai" style="margin-left:auto;" id="clarify-msg-count">共 ${clarifyMessages.length} 条对话</span>
+          ${aiConfig.hasKey ? `<span class="tag tag-success" style="font-size:0.72rem;">🟢 ${aiConfig.provider}</span>` : ''}
+        </div>
+        <div class="chat-area" id="clarify-chat-area">${chatHTML}</div>
+        <div class="chat-input-bar">
+          ${inputBarHTML}
+        </div>
+      </div>
+
+      <!-- Right: Unified Panel -->
+      <div class="clarify-right" id="clarify-right">
+        <!-- Progress -->
+        <div style="margin-bottom:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:0.8rem;color:var(--text-tertiary);">需求完成度</span>
+            <span id="clarify-progress-text" style="font-size:0.85rem;font-weight:600;font-family:var(--font-mono);color:var(--color-primary);">${clarifyState.completeness}%</span>
+          </div>
+          <div style="height:6px;background:rgba(0,0,0,0.06);border-radius:3px;overflow:hidden;">
+            <div id="clarify-progress-bar" style="height:100%;width:${clarifyState.completeness}%;background:${clarifyState.completeness >= 80 ? 'var(--color-success)' : 'var(--color-primary)'};border-radius:3px;transition:width 0.5s ease,background 0.3s;"></div>
+          </div>
+        </div>
+
+        <!-- Original Requirement -->
+        <div class="original-req" style="margin-bottom:16px;">"我想做一个 AI 功能，帮用户更快知道自己现在应该怎么养角色。"</div>
+
+        <!-- Requirement Fields with inline status -->
+        <div id="req-card-dynamic" class="req-fields-list">
+          ${reqFieldsHTML}
+        </div>
+
+        <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(139,115,85,0.1);">
+          ${clarifyState.isComplete 
+            ? `<button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="navigate('/notebook/overview')">进入需求总览 →</button>`
+            : `<button class="btn btn-secondary" style="width:100%;justify-content:center;opacity:0.6;cursor:not-allowed;" disabled>完成度 ≥ 80% 后解锁下一步</button>`
+          }
+        </div>
+      </div>
+    </div>`;
+
+  renderNotebookLayout('ai-clarify', content, '需求梳理');
+
+  // 自动滚到聊天底部
+  const chatArea = document.getElementById('clarify-chat-area');
+  if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+/* ============================================================
+   Page 4: 需求总览
+   ============================================================ */
+function renderOverview() {
+  const clarifyDone = clarifyState.isComplete;
+  const lifecycleSteps = [
+    { label: '需求澄清', status: clarifyDone ? 'completed' : 'active', icon: clarifyDone ? '✓' : '1', route: '/notebook/ai-clarify' },
+    { label: '原型设计', status: clarifyDone ? 'active' : 'pending',    icon: '2', route: '/notebook/prototype' },
+    { label: '逻辑图',   status: 'pending',   icon: '3', route: '/notebook/logic' },
+    { label: 'PRD文档',  status: 'pending',   icon: '4', route: '/notebook/prd' },
+    { label: '数据方案', status: 'pending',   icon: '5', route: '/notebook/data-plan' },
+    { label: '上线观察', status: 'pending',   icon: '6', route: '/notebook/data-input' },
+    { label: '效果复盘', status: 'pending',   icon: '7', route: '/notebook/ai-review' },
+  ];
+
+  let lcHTML = '';
+  lifecycleSteps.forEach((step, i) => {
+    if (i > 0) {
+      const prevDone = lifecycleSteps[i-1].status === 'completed';
+      lcHTML += `<div class="lc-line ${prevDone ? 'done' : ''}"></div>`;
+    }
+    lcHTML += `
+      <div class="lc-step ${step.status}" onclick="navigate('${step.route}')">
+        <div class="lc-dot">${step.status === 'completed' ? '✓' : step.icon}</div>
+        <div class="lc-label">${step.label}</div>
+      </div>`;
+  });
+
+  const chapters = [
+    { icon: '📋', title: '需求梳理', status: clarifyDone ? '已完成' : '进行中', statusCls: clarifyDone ? 'tag-success' : 'tag-warning', desc: `AI 已识别 7 个维度，完成度 ${clarifyState.completeness}%`, route: '/notebook/ai-clarify' },
+    { icon: '📐', title: '原型方案', status: clarifyDone ? '待开始' : '🔒 锁定', statusCls: clarifyDone ? 'tag-muted' : 'tag-muted', desc: clarifyDone ? '已解锁，可生成页面清单与低保真原型' : '需求梳理完成后解锁', route: '/notebook/prototype' },
+    { icon: '🔀', title: '逻辑图',   status: '🔒 锁定', statusCls: 'tag-muted', desc: '需求梳理完成后解锁', route: '/notebook/logic' },
+    { icon: '📄', title: 'PRD文档',  status: '🔒 锁定', statusCls: 'tag-muted', desc: '需求梳理完成后解锁', route: '/notebook/prd' },
+    { icon: '📈', title: '数据方案', status: '🔒 锁定', statusCls: 'tag-muted', desc: '需求梳理完成后解锁', route: '/notebook/data-plan' },
+    { icon: '🔍', title: '效果复盘', status: '🔒 锁定', statusCls: 'tag-muted', desc: '需求梳理完成后解锁', route: '/notebook/ai-review' },
+  ];
+
+  const chaptersHTML = chapters.map(ch => `
+    <div class="chapter-card" onclick="navigate('${ch.route}')">
+      <div class="ch-icon">${ch.icon}</div>
+      <div class="ch-title">${ch.title}</div>
+      <div class="ch-desc">${ch.desc}</div>
+      <div class="ch-footer">
+        <span class="tag ${ch.statusCls}">${ch.status}</span>
+        <span class="ch-link">查看 →</span>
+      </div>
+    </div>`).join('');
+
+  const content = `
+    <div class="overview-header">
+      <h1>AI 角色养成建议助手</h1>
+      <div class="overview-meta">
+        <span>👤 负责人：陈PM</span>
+        <span class="tag tag-warning">P1</span>
+        <span>📅 创建：2025-05-20</span>
+        <span>🕐 更新：2025-07-06</span>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:4px;">生命周期</h3>
+    <div class="lifecycle">${lcHTML}</div>
+
+    <h3 style="margin-bottom:16px;">需求章节</h3>
+    <div class="chapter-grid">${chaptersHTML}</div>`;
+
+  renderNotebookLayout('overview', content, '总览');
+}
+
+/* ============================================================
+   Page 5: 原型方案
+   ============================================================ */
+function renderLockedChapter(pageKey, breadcrumbPage, icon, title, desc) {
+  const pct = clarifyState.completeness;
+  const content = `
+    <div class="locked-chapter">
+      <div class="locked-icon">${icon}</div>
+      <h2 class="locked-title">${title}</h2>
+      <p class="locked-desc">${desc}</p>
+      <div class="locked-progress-wrap">
+        <div class="locked-progress-label">需求卡片完成度</div>
+        <div class="locked-progress-bar-bg">
+          <div class="locked-progress-bar-fill" style="width:${pct}%;"></div>
+        </div>
+        <div class="locked-progress-value">${pct}% / 80%</div>
+      </div>
+      <div class="locked-hint">继续与 AI 对话完善需求卡片，完成度达到 80% 后将自动解锁此章节</div>
+      <button class="btn btn-secondary" onclick="navigate('/notebook/ai-clarify')">← 回到需求梳理</button>
+    </div>`;
+  renderNotebookLayout(pageKey, content, breadcrumbPage);
+}
+
+function renderPrototype() {
+  if (clarifyState.completeness < 80) {
+    return renderLockedChapter('prototype', '原型方案', '📐', '原型方案', '基于需求卡片自动生成页面清单与低保真原型');
+  }
+  const pages = [
+    '首页入口', '功能说明页', '数据授权页', 'AI分析中页',
+    '结果页', '分享页', '异常兜底页'
+  ];
+
+  const listHTML = pages.map((p, i) => `
+    <div class="proto-item ${i === 0 ? 'active' : ''}" onclick="selectProtoPage(this, ${i})">
+      <span class="num">${i + 1}</span>
+      <span>${p}</span>
+    </div>`).join('');
+
+  const content = `
+    <div class="proto-layout">
+      <div class="proto-sidebar">
+        <h3>页面清单</h3>
+        <div class="proto-list" id="proto-list">${listHTML}</div>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(139,115,85,0.1);">
+          <div style="font-size:0.78rem;color:var(--text-tertiary);">共 ${pages.length} 个页面</div>
+          <div style="font-size:0.78rem;color:var(--text-tertiary);margin-top:4px;">✨ AI 生成</div>
+        </div>
+      </div>
+      <div class="proto-main">
+        <div id="proto-content">
+          <!-- Page info card -->
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">
+            <div>
+              <h2 style="margin-bottom:8px;">首页入口</h2>
+              <div style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:10px;">展示AI功能入口Banner，吸引用户点击体验</div>
+              <div style="display:flex;gap:6px;">
+                <span class="tag tag-info">核心页面</span>
+                <span class="tag tag-warning">入口曝光</span>
+                <span class="tag tag-ai">✨ AI生成</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:32px;align-items:flex-start;">
+            <!-- Wireframe -->
+            <div style="flex-shrink:0;">
+              <h3 style="font-size:0.9rem;margin-bottom:12px;">低保真线框图</h3>
+              <div class="wireframe-phone">
+                <div class="wf-statusbar"></div>
+                <div class="wf-navbar">角色养成</div>
+                <div class="wf-banner">
+                  <div class="wf-banner-title">✨ AI 养成建议</div>
+                  <div class="wf-banner-btn">立即体验</div>
+                </div>
+                <div class="wf-cards">
+                  <div class="wf-card-item">角色1</div>
+                  <div class="wf-card-item">角色2</div>
+                  <div class="wf-card-item">角色3</div>
+                </div>
+                <div class="wf-tabbar">
+                  <div>首页</div><div>角色</div><div>背包</div><div>我的</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Module & Interaction -->
+            <div style="flex:1;min-width:0;">
+              <h3 style="font-size:0.9rem;margin-bottom:8px;">模块说明</h3>
+              <table class="module-table">
+                <thead><tr><th>模块</th><th>说明</th></tr></thead>
+                <tbody>
+                  <tr><td style="font-weight:500;">顶部导航栏</td><td>展示页面标题和返回按钮</td></tr>
+                  <tr><td style="font-weight:500;">AI建议入口Banner</td><td>核心CTA，展示功能亮点，首次展示带新手引导</td></tr>
+                  <tr><td style="font-weight:500;">角色列表区</td><td>展示当前拥有的角色，可左右滑动</td></tr>
+                  <tr><td style="font-weight:500;">底部Tab栏</td><td>全局底部导航（首页、角色、背包、我的）</td></tr>
+                </tbody>
+              </table>
+
+              <h3 style="font-size:0.9rem;margin-top:24px;margin-bottom:8px;">交互说明</h3>
+              <div class="interaction-list">
+                <div class="interaction-item"><span class="num-badge">1</span><span>点击Banner → 进入功能说明页</span></div>
+                <div class="interaction-item"><span class="num-badge">2</span><span>首次展示带新手引导气泡</span></div>
+                <div class="interaction-item"><span class="num-badge">3</span><span>Banner支持关闭，关闭后缩小为角标</span></div>
+                <div class="interaction-item"><span class="num-badge">4</span><span>角色列表可左右滑动浏览</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  renderNotebookLayout('prototype', content, '原型方案');
+}
+
+function selectProtoPage(el, idx) {
+  document.querySelectorAll('.proto-item').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ============================================================
+   Page 6: 逻辑图
+   ============================================================ */
+function renderLogic() {
+  if (clarifyState.completeness < 80) {
+    return renderLockedChapter('logic', '逻辑图', '🔀', '逻辑流程图', '基于需求卡片自动生成用户流程、业务流程与异常分支');
+  }
+  const userFlow = `
+    <div class="flow-row">
+      <div class="flow-node flow-node-start">看到入口</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node-normal">点击进入</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node-normal">查看说明</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node-normal">确认授权</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node-normal">AI分析中</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node-normal">查看结果</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node-decision">是否分享?</div>
+    </div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-branch">
+      <div class="flow-branch-item">
+        <div class="flow-branch-label">是</div>
+        <div class="flow-node flow-node-normal">分享到社区</div>
+        <span class="flow-arrow" style="transform:rotate(90deg);">→</span>
+        <div class="flow-node flow-node-end">完成</div>
+      </div>
+      <div class="flow-branch-item">
+        <div class="flow-branch-label">否</div>
+        <div class="flow-node flow-node-end">返回角色页</div>
+      </div>
+    </div>`;
+
+  const bizFlow = `
+    <div class="flow-row">
+      <div class="flow-node flow-node-start">前端请求</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node-normal">鉴权校验</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node-normal">读取角色数据</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node-normal">AI模型处理</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node-normal">生成建议</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node-normal">返回结果</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node-end">前端展示</div>
+    </div>`;
+
+  const errorFlow = `
+    <div class="flow-row">
+      <div class="flow-node flow-node-start">请求发起</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node flow-node-decision">数据是否完整?</div>
+    </div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-branch">
+      <div class="flow-branch-item">
+        <div class="flow-branch-label">完整</div>
+        <div class="flow-node flow-node-normal">正常生成</div>
+        <span class="flow-arrow" style="transform:rotate(90deg);">→</span>
+        <div class="flow-node flow-node-decision">是否成功?</div>
+        <div style="display:flex;gap:24px;margin-top:8px;">
+          <div class="flow-branch-item">
+            <div class="flow-branch-label">成功</div>
+            <div class="flow-node flow-node-end">展示结果</div>
+          </div>
+          <div class="flow-branch-item">
+            <div class="flow-branch-label">失败</div>
+            <div class="flow-node flow-node-error">展示兜底</div>
+            <span class="flow-arrow" style="transform:rotate(90deg);">→</span>
+            <div class="flow-node flow-node-end">引导重试</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-branch-item">
+        <div class="flow-branch-label">不完整</div>
+        <div class="flow-node flow-node-error">提示补充</div>
+        <span class="flow-arrow" style="transform:rotate(90deg);">→</span>
+        <div class="flow-node flow-node-end">返回</div>
+      </div>
+    </div>`;
+
+  const content = `
+    <h2 style="margin-bottom:16px;">逻辑流程图</h2>
+    <div class="logic-tabs" id="logic-tabs">
+      <div class="logic-tab active" onclick="switchLogicTab(0)">用户流程</div>
+      <div class="logic-tab" onclick="switchLogicTab(1)">业务流程</div>
+      <div class="logic-tab" onclick="switchLogicTab(2)">异常流程</div>
+    </div>
+    <div class="flow-container logic-panel" id="logic-panel-0">${userFlow}</div>
+    <div class="flow-container logic-panel" id="logic-panel-1" style="display:none;">${bizFlow}</div>
+    <div class="flow-container logic-panel" id="logic-panel-2" style="display:none;">${errorFlow}</div>`;
+
+  renderNotebookLayout('logic', content, '逻辑图');
+}
+
+function switchLogicTab(idx) {
+  document.querySelectorAll('#logic-tabs .logic-tab').forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.logic-panel').forEach((p, i) => {
+    p.style.display = i === idx ? '' : 'none';
+  });
+}
+
+/* ============================================================
+   Page 7: PRD文档
+   ============================================================ */
+function renderPRD() {
+  if (clarifyState.completeness < 80) {
+    return renderLockedChapter('prd', 'PRD文档', '📄', 'PRD 需求文档', '基于需求卡片自动生成结构化需求文档，含交互规则与验收标准');
+  }
+  const tocItems = [
+    '需求背景','需求目标','目标用户','用户场景','功能范围',
+    '非目标范围','页面说明','业务规则','异常处理','验收标准'
+  ];
+  const tocHTML = tocItems.map((t, i) => `
+    <div class="toc-item ${i === 0 ? 'active' : ''}" onclick="this.parentElement.querySelectorAll('.toc-item').forEach(e=>e.classList.remove('active'));this.classList.add('active');">
+      <span class="toc-num">${i + 1}.</span><span>${t}</span>
+    </div>`).join('');
+
+  const content = `
+    <div class="prd-layout">
+      <!-- TOC -->
+      <div class="prd-toc">
+        <h3>文档目录</h3>
+        <div class="toc-list">${tocHTML}</div>
+      </div>
+
+      <!-- Document -->
+      <div class="prd-content paper-texture">
+        <div class="prd-doc-title">AI 角色养成建议助手 — 产品需求文档</div>
+        <div class="prd-doc-meta">
+          <span class="tag tag-info">V1.0</span>
+          <span class="tag tag-ai">✨ AI生成</span>
+          <span class="tag tag-muted">2025-07-06</span>
+        </div>
+
+        <div class="prd-section">
+          <h3>1. 需求背景</h3>
+          <p>玩家在角色养成过程中，面临角色众多、资源有限、养成路径复杂的问题。中低理解门槛的玩家（新手、回流玩家）不知道优先培养哪些角色，容易浪费资源走弯路。当前缺乏智能化的养成建议工具。</p>
+        </div>
+
+        <div class="prd-section">
+          <h3>2. 需求目标</h3>
+          <p>通过AI技术，为玩家提供个性化的角色养成建议，降低理解成本，提高角色养成决策效率。</p>
+          <ul>
+            <li><span style="color:var(--color-success)">●</span> 降低新手/回流玩家的养成决策门槛</li>
+            <li><span style="color:var(--color-success)">●</span> 提供基于账号数据的个性化建议</li>
+            <li><span style="color:var(--color-success)">●</span> 提升角色页的功能使用率</li>
+          </ul>
+        </div>
+
+        <div class="prd-section">
+          <h3>3. 目标用户</h3>
+          <table class="prd-table">
+            <thead><tr><th>用户类型</th><th>特征</th><th>核心诉求</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:500;">新手玩家</td><td>刚入游，不了解养成体系</td><td>快速找到正确养成方向</td></tr>
+              <tr><td style="font-weight:500;">回流玩家</td><td>离开一段时间，版本变化大</td><td>快速跟上当前版本节奏</td></tr>
+              <tr><td style="font-weight:500;">新区玩家</td><td>到新区重新开始</td><td>高效利用资源快速成长</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="prd-section">
+          <h3>4. 用户场景</h3>
+          <p>用户进入角色页面后，看到AI建议入口Banner，点击进入功能说明页，确认授权读取角色数据后，AI分析生成养成建议（包括优先级排序、推荐阵容、资源投入方向），用户查看结果并可分享到社区。</p>
+        </div>
+
+        <div class="prd-section">
+          <h3>5. 功能范围</h3>
+          <ul>
+            <li><span style="color:var(--color-success)">✅</span> 读取当前账号角色数据</li>
+            <li><span style="color:var(--color-success)">✅</span> 输出角色养成优先级排序</li>
+            <li><span style="color:var(--color-success)">✅</span> 推荐最优阵容搭配</li>
+            <li><span style="color:var(--color-success)">✅</span> 资源投入建议（材料、金币分配）</li>
+            <li><span style="color:var(--color-success)">✅</span> 支持结果分享到社区</li>
+          </ul>
+        </div>
+
+        <div class="prd-section">
+          <h3>6. 非目标范围</h3>
+          <ul>
+            <li><span style="color:var(--color-error)">❌</span> 首期不做复杂战斗模拟</li>
+            <li><span style="color:var(--color-error)">❌</span> 首期不做人工客服</li>
+            <li><span style="color:var(--color-error)">❌</span> 首期不做全量攻略库</li>
+            <li><span style="color:var(--color-error)">❌</span> 首期不做跨服数据对比</li>
+          </ul>
+        </div>
+
+        <div class="prd-section">
+          <h3>7. 页面说明</h3>
+          <table class="prd-table">
+            <thead><tr><th>序号</th><th>页面</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>首页入口</td><td>展示AI功能Banner入口</td></tr>
+              <tr><td>2</td><td>功能说明页</td><td>功能介绍与数据授权引导</td></tr>
+              <tr><td>3</td><td>数据授权页</td><td>确认授权读取角色数据</td></tr>
+              <tr><td>4</td><td>AI分析中页</td><td>展示分析进度与预期时间</td></tr>
+              <tr><td>5</td><td>结果页</td><td>展示养成优先级、阵容、资源建议</td></tr>
+              <tr><td>6</td><td>分享页</td><td>生成分享卡片并分享到社区</td></tr>
+              <tr><td>7</td><td>异常兜底页</td><td>生成失败时的兜底展示</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="prd-section">
+          <h3>8. 业务规则</h3>
+          <ol>
+            <li>AI分析基于用户当前账号下所有已获得角色数据</li>
+            <li>生成耗时不超过10秒，超时展示loading提示</li>
+            <li>每日每用户可免费使用3次，超出后提示次日刷新</li>
+            <li>建议结果缓存24小时，期间再次查看不消耗次数</li>
+            <li>分享到社区的内容自动脱敏，隐藏敏感数据</li>
+          </ol>
+        </div>
+
+        <div class="prd-section">
+          <h3>9. 异常处理</h3>
+          <table class="prd-table">
+            <thead><tr><th>异常场景</th><th>处理方式</th><th>展示</th></tr></thead>
+            <tbody>
+              <tr><td>角色数据不完整</td><td>提示用户补充关键数据</td><td>弹窗引导</td></tr>
+              <tr><td>AI生成超时(&gt;15s)</td><td>展示超时提示</td><td>loading+兜底文案</td></tr>
+              <tr><td>AI生成失败</td><td>记录失败原因</td><td>兜底话术+重试按钮</td></tr>
+              <tr><td>接口异常</td><td>降级处理</td><td>通用错误页</td></tr>
+              <tr><td>未登录/未授权</td><td>引导登录或授权</td><td>登录弹窗</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="prd-section">
+          <h3>10. 验收标准</h3>
+          <ul>
+            <li><span style="font-size:1.1rem;">☐</span> 点击入口Banner可正常跳转功能说明页</li>
+            <li><span style="font-size:1.1rem;">☐</span> 授权流程可正常读取角色数据</li>
+            <li><span style="font-size:1.1rem;">☐</span> AI生成结果在10秒内返回</li>
+            <li><span style="font-size:1.1rem;">☐</span> 结果页展示养成优先级、阵容建议、资源建议三个模块</li>
+            <li><span style="font-size:1.1rem;">☐</span> 生成失败时展示兜底文案和重试按钮</li>
+            <li><span style="font-size:1.1rem;">☐</span> 分享功能可正常生成分享卡片</li>
+            <li><span style="font-size:1.1rem;">☐</span> 每日使用次数限制生效</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- AI Aside -->
+      <div class="prd-aside">
+        <h3 style="margin-bottom:16px;">🤖 AI 文档助手</h3>
+
+        <div class="quality-score">
+          <div class="score-num">85</div>
+          <div class="score-label">文档质量评分（满分100）</div>
+          <div class="quality-bars">
+            <div class="quality-bar-item">
+              <span class="qb-label">完整性</span>
+              <div class="qb-bar"><div class="qb-fill" style="width:90%"></div></div>
+              <span class="qb-val">90%</span>
+            </div>
+            <div class="quality-bar-item">
+              <span class="qb-label">可开发性</span>
+              <div class="qb-bar"><div class="qb-fill" style="width:85%"></div></div>
+              <span class="qb-val">85%</span>
+            </div>
+            <div class="quality-bar-item">
+              <span class="qb-label">可验收性</span>
+              <div class="qb-bar"><div class="qb-fill" style="width:75%"></div></div>
+              <span class="qb-val">75%</span>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-size:0.9rem;margin-bottom:10px;">💡 改进建议</h3>
+        <div class="ai-suggestion"><span>💡</span><span>验收标准可以增加具体数值指标（如生成成功率≥90%）</span></div>
+        <div class="ai-suggestion"><span>💡</span><span>建议补充数据埋点相关说明，方便数据团队对接</span></div>
+        <div class="ai-suggestion"><span>💡</span><span>异常处理可增加频控触发（超出3次）的场景</span></div>
+        <div class="ai-suggestion"><span>💡</span><span>建议明确AI模型调用的降级策略（如模型不可用时）</span></div>
+
+        <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;margin-top:16px;">✨ AI 补充建议</button>
+      </div>
+    </div>`;
+
+  renderNotebookLayout('prd', content, 'PRD文档');
+}
+
+/* ============================================================
+   Page 8: 数据方案
+   ============================================================ */
+function renderDataPlan() {
+  if (clarifyState.completeness < 80) {
+    return renderLockedChapter('data-plan', '数据方案', '📈', '数据效果回收方案', '基于成功指标自动生成埋点清单、漏斗设计与看板建议');
+  }
+  const trackingRows = [
+    ['ai_feature_exposure', '首页入口曝光', 'user_id, page'],
+    ['ai_feature_click',    '点击AI功能入口', 'user_id, entrance_id'],
+    ['ai_auth_confirm',     '用户确认授权',  'user_id, role_id'],
+    ['ai_generate_start',   '开始生成',     'user_id, role_id'],
+    ['ai_generate_success', '生成成功',     'user_id, duration'],
+    ['ai_generate_fail',    '生成失败',     'user_id, fail_reason'],
+    ['ai_result_view',      '查看结果页',   'user_id, result_id'],
+    ['ai_result_share',     '点击分享',     'user_id, share_channel'],
+  ];
+  const trackingHTML = trackingRows.map(r => `
+    <tr><td><code>${r[0]}</code></td><td>${r[1]}</td><td style="font-size:0.78rem;color:var(--text-tertiary);">${r[2]}</td></tr>`).join('');
+
+  const funnelData = [
+    { label: '入口曝光', pct: 100, color: '#8B7355' },
+    { label: '入口点击', pct: 25,  color: '#A89279' },
+    { label: '授权完成', pct: 18,  color: '#5B7B8F' },
+    { label: '生成成功', pct: 15,  color: '#4A7FB5' },
+    { label: '查看结果', pct: 12,  color: '#5B8C5A' },
+  ];
+  const funnelHTML = funnelData.map(f => `
+    <div class="funnel-step">
+      <span class="funnel-label">${f.label}</span>
+      <div class="funnel-bar" style="width:${f.pct}%;background:${f.color};">${f.pct}%</div>
+    </div>`).join('');
+
+  const content = `
+    <h2 style="margin-bottom:20px;">📊 数据方案</h2>
+
+    <!-- North Star -->
+    <div class="north-star">
+      <div class="ns-label">⭐ 北极星指标</div>
+      <div class="ns-value">结果页查看率</div>
+      <div class="ns-target">目标 ≥ 75%</div>
+    </div>
+
+    <!-- Metrics Grid -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <h4>📊 漏斗指标</h4>
+        <div class="funnel-visual">${funnelHTML}</div>
+      </div>
+      <div class="metric-card">
+        <h4>🎯 质量指标</h4>
+        <ul>
+          <li><span class="metric-dot" style="background:var(--color-success);"></span> AI生成成功率 <strong>≥ 90%</strong></li>
+          <li><span class="metric-dot" style="background:var(--color-warning);"></span> 平均生成耗时 <strong>≤ 10s</strong></li>
+          <li><span class="metric-dot" style="background:var(--color-error);"></span> 兜底触发率 <strong>≤ 5%</strong></li>
+        </ul>
+      </div>
+      <div class="metric-card">
+        <h4>👆 行为指标</h4>
+        <ul>
+          <li><span class="metric-dot" style="background:var(--color-info);"></span> 分享率 <strong>≥ 10%</strong></li>
+          <li><span class="metric-dot" style="background:var(--color-info);"></span> 建议采纳率</li>
+          <li><span class="metric-dot" style="background:var(--color-info);"></span> 功能使用频次</li>
+        </ul>
+      </div>
+      <div class="metric-card">
+        <h4>📈 留存指标</h4>
+        <ul>
+          <li><span class="metric-dot" style="background:var(--color-success);"></span> 功能用户次日活跃</li>
+          <li><span class="metric-dot" style="background:var(--color-success);"></span> 功能用户7日活跃</li>
+          <li><span class="metric-dot" style="background:var(--color-success);"></span> 功能用户vs非功能用户留存对比</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Tracking Table -->
+    <div class="card" style="margin-bottom:24px;">
+      <h3 style="font-size:1rem;margin-bottom:14px;">📋 埋点清单</h3>
+      <table class="tracking-table">
+        <thead><tr><th>事件名</th><th>触发时机</th><th>关键字段</th></tr></thead>
+        <tbody>${trackingHTML}</tbody>
+      </table>
+    </div>
+
+    <!-- Dashboard Suggestions -->
+    <h3 style="font-size:1rem;margin-bottom:4px;">📺 推荐看板</h3>
+    <div class="dashboard-suggestions">
+      <div class="dashboard-card">
+        <div class="dc-icon">📈</div>
+        <div class="dc-title">每日漏斗转化趋势</div>
+        <div class="dc-desc">观察各环节日变化</div>
+      </div>
+      <div class="dashboard-card">
+        <div class="dc-icon">👥</div>
+        <div class="dc-title">分群对比看板</div>
+        <div class="dc-desc">新用户vs回流用户表现</div>
+      </div>
+      <div class="dashboard-card">
+        <div class="dc-icon">🔧</div>
+        <div class="dc-title">AI生成质量监控</div>
+        <div class="dc-desc">成功率、耗时、兜底率</div>
+      </div>
+    </div>`;
+
+  renderNotebookLayout('data-plan', content, '数据方案');
+}
+
+/* ============================================================
+   Page 9: 数据录入
+   ============================================================ */
+function renderDataInput() {
+  if (clarifyState.completeness < 80) {
+    return renderLockedChapter('data-input', '数据录入', '📝', '效果数据录入', '上线后录入实际数据，AI 对比目标自动计算达成率');
+  }
+  const metrics = [
+    { name: '入口点击率', target: '8%',  actual: '11.5', unit: '%', rate: '143.8%', status: '✅ 超预期', cls: 'tag-success' },
+    { name: '授权完成率', target: '70%', actual: '63',   unit: '%', rate: '90.0%',  status: '⚠️ 低于预期', cls: 'tag-warning' },
+    { name: 'AI生成成功率', target: '90%', actual: '82',   unit: '%', rate: '91.1%',  status: '🔴 存在风险', cls: 'tag-error' },
+    { name: '结果页查看率', target: '75%', actual: '78',   unit: '%', rate: '104.0%', status: '✅ 达标',   cls: 'tag-success' },
+    { name: '分享率',     target: '10%', actual: '6',    unit: '%', rate: '60.0%',  status: '🔴 不达预期', cls: 'tag-error' },
+  ];
+
+  const rowsHTML = metrics.map((m, i) => `
+    <tr>
+      <td class="metric-name">${m.name}</td>
+      <td class="target-val">${m.target}</td>
+      <td><input type="text" id="actual-${i}" value="${m.actual}" oninput="recalcRow(${i})"> ${m.unit}</td>
+      <td class="rate-val" id="rate-${i}">${m.rate}</td>
+      <td class="status-cell"><span class="tag ${m.cls}" id="status-${i}">${m.status}</span></td>
+    </tr>`).join('');
+
+  const content = `
+    <div class="input-header">
+      <div class="input-header-left">
+        <h2>效果数据录入</h2>
+        <p>请录入上线后的实际数据，AI将帮你分析效果并生成复盘结论</p>
+      </div>
+      <div class="input-header-right">
+        <span class="tag tag-muted">📅 上线日期: 2025-06-20</span>
+        <span class="tag tag-info">观察周期: 14天</span>
+      </div>
+    </div>
+
+    <div class="input-methods">
+      <div class="input-method active">
+        <div class="im-icon">✍️</div>
+        <div class="im-label">手动录入</div>
+        <div class="im-desc">直接填写数据</div>
+      </div>
+      <div class="input-method">
+        <div class="im-icon">📋</div>
+        <div class="im-label">粘贴表格</div>
+        <div class="im-desc">从表格复制粘贴</div>
+      </div>
+      <div class="input-method">
+        <div class="im-icon">📄</div>
+        <div class="im-label">上传CSV</div>
+        <div class="im-desc">导入数据文件</div>
+      </div>
+      <div class="input-method disabled">
+        <div class="im-icon">🔗</div>
+        <div class="im-label">API接入</div>
+        <div class="im-desc">暂不可用</div>
+      </div>
+    </div>
+
+    <div class="data-table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr><th>指标名称</th><th style="text-align:center">上线前目标</th><th>实际表现</th><th style="text-align:center">达成率</th><th style="text-align:center">状态</th></tr>
+        </thead>
+        <tbody>${rowsHTML}</tbody>
+      </table>
+    </div>
+
+    <div class="input-actions">
+      <button class="btn btn-secondary">保存草稿</button>
+      <button class="btn btn-primary" onclick="navigate('/notebook/ai-review')">提交数据并生成AI分析 →</button>
+    </div>`;
+
+  renderNotebookLayout('data-input', content, '数据录入');
+}
+
+/* Recalculate row on input change */
+function recalcRow(idx) {
+  const targets = [8, 70, 90, 75, 10];
+  const input = document.getElementById('actual-' + idx);
+  const val = parseFloat(input.value) || 0;
+  const target = targets[idx];
+  const rate = target > 0 ? ((val / target) * 100).toFixed(1) : '0.0';
+  document.getElementById('rate-' + idx).textContent = rate + '%';
+
+  let status, cls;
+  const r = parseFloat(rate);
+  if (r >= 110) { status = '✅ 超预期'; cls = 'tag-success'; }
+  else if (r >= 95) { status = '✅ 达标'; cls = 'tag-success'; }
+  else if (r >= 85) { status = '⚠️ 低于预期'; cls = 'tag-warning'; }
+  else { status = '🔴 不达预期'; cls = 'tag-error'; }
+
+  const el = document.getElementById('status-' + idx);
+  el.textContent = status;
+  el.className = 'tag ' + cls;
+}
+
+/* ============================================================
+   Page 10: AI复盘
+   ============================================================ */
+function renderAIReview() {
+  if (clarifyState.completeness < 80) {
+    return renderLockedChapter('ai-review', 'AI复盘', '🔍', 'AI 复盘分析', '基于数据表现自动输出目标达成判断、漏斗分析与优化建议');
+  }
+  const achievements = [
+    { name: '入口点击率', target: '8%',  actual: '11.5%', rate: '143.8%', status: '超预期', cls: 'good',  statusBg: 'rgba(91,140,90,0.12)', statusColor: 'var(--color-success)' },
+    { name: '授权完成率', target: '70%', actual: '63%',   rate: '90.0%',  status: '低于预期', cls: 'warn',  statusBg: 'rgba(196,145,60,0.12)', statusColor: 'var(--color-warning)' },
+    { name: 'AI生成成功率', target: '90%', actual: '82%',   rate: '91.1%',  status: '存在风险', cls: 'bad',   statusBg: 'rgba(192,86,79,0.12)', statusColor: 'var(--color-error)' },
+    { name: '结果页查看率', target: '75%', actual: '78%',   rate: '104.0%', status: '达标',   cls: 'good',  statusBg: 'rgba(91,140,90,0.12)', statusColor: 'var(--color-success)' },
+    { name: '分享率',     target: '10%', actual: '6%',    rate: '60.0%',  status: '不达预期', cls: 'bad',   statusBg: 'rgba(192,86,79,0.12)', statusColor: 'var(--color-error)' },
+  ];
+
+  const achieveHTML = achievements.map(a => `
+    <div class="achievement-card ${a.cls}">
+      <div class="ac-name">${a.name}</div>
+      <div class="ac-target">目标: ${a.target}</div>
+      <div class="ac-actual">${a.actual}</div>
+      <div class="ac-rate" style="color:var(--text-tertiary)">达成 ${a.rate}</div>
+      <div class="ac-status" style="background:${a.statusBg};color:${a.statusColor};">${a.status}</div>
+    </div>`).join('');
+
+  const funnelData = [
+    { label: '入口曝光', pct: 100,  num: '50,000', w: '100%', color: '#6B563F' },
+    { label: '入口点击', pct: 11.5, num: '5,750',  w: '45%',  color: '#8B7355', drop: '↓ 损耗 88.5%' },
+    { label: '授权完成', pct: 7.2,  num: '3,623',  w: '32%',  color: '#5B7B8F', drop: '↓ 损耗 37.0%' },
+    { label: '生成成功', pct: 5.9,  num: '2,971',  w: '26%',  color: '#4A7FB5', drop: '↓ 损耗 18.0%' },
+    { label: '查看结果', pct: 4.6,  num: '2,317',  w: '22%',  color: '#5B8C5A', drop: '↓ 损耗 22.0%' },
+    { label: '点击分享', pct: 0.7,  num: '346',    w: '10%',  color: '#C4913C', drop: '↓ 损耗 85.1%' },
+  ];
+
+  const funnelHTML = funnelData.map((f, i) => {
+    let dropHTML = '';
+    if (f.drop) {
+      const isMax = f.drop.includes('88.5');
+      dropHTML = `<div class="funnel-drop" ${isMax ? 'style="font-weight:600;color:var(--color-error);"' : ''}>${f.drop}${isMax ? ' ← 最大损耗' : ''}</div>`;
+    }
+    return `${dropHTML}
+      <div class="funnel-row">
+        <span class="fr-label">${f.label}</span>
+        <div class="fr-bar-wrap"><div class="fr-bar" style="width:${f.w};background:${f.color};">${f.pct}%</div></div>
+        <span class="fr-stats">${f.num}人</span>
+      </div>`;
+  }).join('');
+
+  const suggestions = [
+    { p: 'P0', cls: 'p0', text: '优化授权页文案，明确数据用途，降低用户对数据读取的顾虑' },
+    { p: 'P0', cls: 'p0', text: '增加生成前的数据完整性预检，减少无效请求导致的失败' },
+    { p: 'P1', cls: 'p1', text: '在结果页增加“一键保存方案”功能，提升结果价值感' },
+    { p: 'P1', cls: 'p1', text: '增加“分享到社区得奖励”激励机制，提升分享意愿' },
+    { p: 'P2', cls: 'p2', text: '将复盘周期拆为3日、7日、14日三轮观察，及时发现问题' },
+  ];
+  const suggestionsHTML = suggestions.map(s => `
+    <div class="suggestion-card ${s.cls}">
+      <span class="sg-priority">${s.p}</span>
+      <span class="sg-content">${s.text}</span>
+    </div>`).join('');
+
+  const content = `
+    <div class="review-header" style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <div>
+        <h2>🔍 AI 复盘分析</h2>
+        <p>基于上线14天数据，AI已生成以下分析结论</p>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <span class="tag tag-ai">🤖 AI分析</span>
+        <span class="tag tag-muted">📅 2025-07-06</span>
+      </div>
+    </div>
+
+    <!-- Achievement Cards -->
+    <h3 style="margin-bottom:12px;">🎯 目标达成总览</h3>
+    <div class="achievement-grid">${achieveHTML}</div>
+
+    <!-- Funnel -->
+    <div class="review-funnel">
+      <h3>📉 漏斗损耗分析</h3>
+      ${funnelHTML}
+    </div>
+
+    <!-- AI Conclusion -->
+    <div class="ai-conclusion">
+      <h3>🤖 AI 分析结论</h3>
+      <div class="conclusion-text">
+        本需求上线后，<strong>入口点击率显著超出预期</strong>（11.5% vs 目标8%），说明用户对AI养成建议有较强需求。但主要损耗出现在两个环节：<br><br>
+        1. <strong>授权转化偏低</strong>（63% vs 目标70%）：用户对数据读取存在顾虑，授权页面的信任建设不足<br>
+        2. <strong>AI生成成功率不足</strong>（82% vs 目标90%）：主要原因是角色数据不完整导致生成失败，需加强数据预检<br>
+        3. <strong>分享率远低于预期</strong>（6% vs 目标10%）：分享动力不足，缺少激励机制<br><br>
+        <strong>整体判断：需求方向正确，入口吸引力强，但中间转化环节有明显损耗，需重点优化授权体验和生成成功率。</strong>
+      </div>
+    </div>
+
+    <!-- Suggestions -->
+    <h3 style="margin-bottom:12px;">📋 下一步优化建议</h3>
+    <div class="suggestions-list">${suggestionsHTML}</div>`;
+
+  renderNotebookLayout('ai-review', content, 'AI复盘');
+}
+
+/* ============================================================
+   Settings Page
+   ============================================================ */
+function renderSettings() {
+  // 从 localStorage 读取已保存的设置
+  const savedProvider = localStorage.getItem('ai_provider') || 'anthropic';
+  const savedApiKey = localStorage.getItem('ai_api_key') || '';
+  const savedModel = localStorage.getItem('ai_model') || '';
+  const savedBaseUrl = localStorage.getItem('ai_base_url') || '';
+  const autoSave = localStorage.getItem('ai_auto_save') !== 'false';
+
+  const maskedKey = savedApiKey ? savedApiKey.slice(0, 8) + '••••••••' + savedApiKey.slice(-4) : '';
+
+  const providerOptions = [
+    { value: 'openai',    label: 'OpenAI' },
+    { value: 'anthropic', label: 'Anthropic' },
+    { value: 'deepseek',  label: 'DeepSeek' },
+    { value: 'custom',    label: '自定义（兼容 OpenAI）' },
+  ];
+
+  const providerSelectHTML = providerOptions.map(p =>
+    `<option value="${p.value}" ${p.value === savedProvider ? 'selected' : ''}>${p.label}</option>`
+  ).join('');
+
+  const showCustomUrl = savedProvider === 'custom' ? '' : 'style="display:none;"';
+
+  $('#app').innerHTML = `
+    <div class="topbar">
+      <div class="topbar-logo" style="cursor:pointer;" onclick="navigate('/')">产品需求手账</div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost btn-sm" onclick="navigate('/')">← 返回书架</button>
+      </div>
+    </div>
+    <div class="settings-page page-enter">
+      <h2>⚙️ 设置</h2>
+      <p class="settings-desc">配置 AI 能力和应用偏好，让工具更懂你的需求</p>
+
+      <!-- 个人信息 -->
+      <div class="settings-section">
+        <h3>👤 个人信息</h3>
+        <p class="section-desc">设置你的头像、名称和简介，将展示在书架首页</p>
+
+        <div id="pm-settings-preview" style="margin-bottom:16px;">
+          ${(() => {
+            const p = getPMProfile();
+            const avatarHTML = p.avatar
+              ? `<img src="${p.avatar}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
+              : (p.name ? `<span style="font-size:1.2rem;">${p.name.slice(0,1)}</span>` : '👤');
+            return `<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg-page);border-radius:var(--radius-sm);">
+              <div style="width:42px;height:42px;border-radius:50%;background:var(--bg-paper-warm);border:2px solid rgba(139,115,85,0.15);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">${avatarHTML}</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-family:var(--font-serif);font-size:0.92rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.name || '未设置'}</div>
+                ${p.bio ? `<div style="font-size:0.78rem;color:var(--text-tertiary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.bio}</div>` : ''}
+              </div>
+            </div>`;
+          })()}
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label">
+            <div class="label-title">头像</div>
+            <div class="label-hint">上传图片文件</div>
+          </div>
+          <div class="setting-control">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div id="pm-avatar-preview" style="width:56px;height:56px;border-radius:50%;background:var(--bg-page);border:2px dashed rgba(139,115,85,0.3);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
+                ${(() => {
+                  const p = getPMProfile();
+                  return p.avatar
+                    ? `<img src="${p.avatar}" alt="preview" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
+                    : `<span style="font-size:1.5rem;color:var(--text-muted);">👤</span>`;
+                })()}
+              </div>
+              <div>
+                <label for="pm-edit-avatar-file" class="btn btn-secondary btn-sm" style="cursor:pointer;display:inline-flex;margin-bottom:4px;">📷 选择图片</label>
+                <input type="file" id="pm-edit-avatar-file" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)">
+                <div style="font-size:0.72rem;color:var(--text-tertiary);">支持 JPG、PNG、GIF，不超过 2MB</div>
+              </div>
+            </div>
+            <input type="hidden" id="pm-edit-avatar" value="${getPMProfile().avatar}">
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label">
+            <div class="label-title">名称</div>
+            <div class="label-hint">最多 20 字</div>
+          </div>
+          <div class="setting-control">
+            <div class="token-input-wrap">
+              <input type="text" id="pm-edit-name" placeholder="你的名字" value="${getPMProfile().name}" maxlength="20">
+            </div>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label">
+            <div class="label-title">简介</div>
+            <div class="label-hint">最多 80 字</div>
+          </div>
+          <div class="setting-control">
+            <div class="token-input-wrap">
+              <input type="text" id="pm-edit-bio" placeholder="一句话介绍自己…" value="${getPMProfile().bio}" maxlength="80">
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;margin-top:12px;">
+          <button class="btn btn-primary btn-sm" onclick="savePMProfile()">保存个人信息</button>
+        </div>
+      </div>
+
+      <!-- AI 模型配置 -->
+      <div class="settings-section">
+        <h3>🤖 AI 模型配置</h3>
+        <p class="section-desc">配置用于需求梳理、智能填充、AI 复盘等功能的大语言模型</p>
+
+        <div class="setting-row">
+          <div class="setting-label">
+            <div class="label-title">服务提供方</div>
+            <div class="label-hint">选择 AI 平台</div>
+          </div>
+          <div class="setting-control">
+            <select class="setting-select" id="setting-provider" onchange="onProviderChange()" style="margin-bottom:8px;">
+              ${providerSelectHTML}
+            </select>
+            <div id="provider-desc" style="font-size:0.82rem;color:var(--text-secondary);margin-top:4px;">
+              ${(() => {
+                const descs = { openai: 'GPT-4.1 / GPT-5 系列', anthropic: 'Claude Sonnet 4.6 / Haiku 4.5 系列', deepseek: 'DeepSeek V4 Flash / Pro 系列', custom: '兼容 OpenAI 格式的自定义服务' };
+                return descs[savedProvider] || '';
+              })()}
+            </div>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label">
+            <div class="label-title">API Key</div>
+            <div class="label-hint">密钥仅存本地</div>
+          </div>
+          <div class="setting-control">
+            <div class="token-input-wrap">
+              <input type="password" id="setting-api-key" placeholder="sk-... 粘贴你的 API Key" value="${savedApiKey}">
+              <button class="btn btn-secondary btn-sm" onclick="toggleKeyVisibility()" id="btn-toggle-key">👁️</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label">
+            <div class="label-title">Base URL</div>
+            <div class="label-hint">自定义 API 地址</div>
+          </div>
+          <div class="setting-control">
+            <div class="token-input-wrap">
+              <input type="url" id="setting-base-url" placeholder="${(() => {
+                const placeholders = { openai: 'https://api.openai.com/v1', anthropic: 'https://api.anthropic.com/v1', deepseek: 'https://api.deepseek.com', custom: 'https://your-proxy.example.com/v1' };
+                return placeholders[savedProvider] || 'https://api.example.com/v1';
+              })()} （留空用默认）" value="${savedBaseUrl}">
+            </div>
+            <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">自定义 API 地址，用于代理/中转。留空则使用官方默认地址。</div>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label">
+            <div class="label-title">连接测试</div>
+            <div class="label-hint">验证配置是否有效</div>
+          </div>
+          <div class="setting-control">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <button class="btn btn-secondary btn-sm" onclick="testAIConnection()" id="btn-test-connection">🔗 连接测试</button>
+              <span id="test-connection-result" style="font-size:0.82rem;"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label">
+            <div class="label-title">可用模型</div>
+            <div class="label-hint">点击选择</div>
+          </div>
+          <div class="setting-control">
+            <div id="model-tags-list" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+              ${(() => {
+                const conf = PROVIDER_CONFIG[savedProvider] || {};
+                const models = conf.models || [];
+                const currentModel = savedModel || conf.defaultModel || '';
+                if (models.length === 0) return '<span style="font-size:0.82rem;color:var(--text-muted);">请在下方手动输入模型名</span>';
+                return models.map(m => `<button class="model-tag ${m === currentModel ? 'active' : ''}" onclick="selectModel(this, '${m}')">${m}</button>`).join('');
+              })()}
+            </div>
+            <input type="hidden" id="setting-model" value="${savedModel}">
+          </div>
+        </div>
+      </div>
+
+      <!-- AI 行为偏好 -->
+      <div class="settings-section">
+        <h3>🎯 AI 行为偏好</h3>
+        <p class="section-desc">控制 AI 在各环节的表现方式</p>
+
+        <div class="setting-row">
+          <div class="setting-label">
+            <div class="label-title">自动保存</div>
+            <div class="label-hint">设置变更后自动存储</div>
+          </div>
+          <div class="setting-control">
+            <label class="setting-toggle" onclick="toggleSwitch(this)">
+              <span class="toggle-switch ${autoSave ? 'on' : ''}"></span>
+              <span>修改设置后自动保存</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label">
+            <div class="label-title">输出语言</div>
+            <div class="label-hint">AI 回复的语言</div>
+          </div>
+          <div class="setting-control">
+            <select class="setting-select" id="setting-lang">
+              <option value="zh" selected>简体中文</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 操作按钮 -->
+      <div style="display:flex;gap:12px;justify-content:flex-end;margin-bottom:16px;">
+        <button class="btn btn-secondary" onclick="resetSettings()">重置默认</button>
+        <button class="btn btn-primary" onclick="saveSettings()">💾 保存设置</button>
+      </div>
+
+      <div class="settings-footer">
+        <div class="version">产品需求手账 v0.1.0 · 密钥仅存储在浏览器 localStorage，不会上传到任何服务器</div>
+      </div>
+    </div>`;
+}
+
+function onProviderChange() {
+  const provider = document.getElementById('setting-provider').value;
+  const conf = PROVIDER_CONFIG[provider] || {};
+  const models = conf.models || [];
+
+  // 更新描述
+  const descs = { openai: 'GPT-4.1 / GPT-5 系列', anthropic: 'Claude Sonnet 4.6 / Haiku 4.5 系列', deepseek: 'DeepSeek V4 Flash / Pro 系列', custom: '兼容 OpenAI 格式的自定义服务' };
+  const descEl = document.getElementById('provider-desc');
+  if (descEl) descEl.textContent = descs[provider] || '';
+
+  // 更新 Base URL placeholder
+  const baseUrlInput = document.getElementById('setting-base-url');
+  if (baseUrlInput) {
+    const placeholders = { openai: 'https://api.openai.com/v1', anthropic: 'https://api.anthropic.com/v1', deepseek: 'https://api.deepseek.com', custom: 'https://your-proxy.example.com/v1' };
+    baseUrlInput.placeholder = (placeholders[provider] || 'https://api.example.com/v1') + ' （留空用默认）';
+  }
+
+  // 刷新模型标签
+  const modelTagsList = document.getElementById('model-tags-list');
+  const modelInput = document.getElementById('setting-model');
+  if (modelTagsList) {
+    if (models.length === 0) {
+      modelTagsList.innerHTML = '<span style="font-size:0.82rem;color:var(--text-muted);">请在下方手动输入模型名</span>';
+      modelInput.value = '';
+    } else {
+      const defaultModel = conf.defaultModel || models[0];
+      modelTagsList.innerHTML = models.map(m =>
+        `<button class="model-tag ${m === defaultModel ? 'active' : ''}" onclick="selectModel(this, '${m}')">${m}</button>`
+      ).join('');
+      modelInput.value = defaultModel;
+    }
+  }
+
+  // 清空测试结果
+  const result = document.getElementById('test-connection-result');
+  if (result) result.innerHTML = '';
+}
+
+function toggleKeyVisibility() {
+  const input = document.getElementById('setting-api-key');
+  const btn = document.getElementById('btn-toggle-key');
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁️';
+  }
+}
+
+function selectModel(btn, modelName) {
+  document.querySelectorAll('.model-tag').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('setting-model').value = modelName;
+}
+
+async function testAIConnection() {
+  const btn = document.getElementById('btn-test-connection');
+  const result = document.getElementById('test-connection-result');
+  const apiKey = document.getElementById('setting-api-key').value.trim();
+  const provider = document.getElementById('setting-provider').value;
+  const baseUrl = document.getElementById('setting-base-url').value.trim();
+  const model = document.getElementById('setting-model').value.trim();
+
+  if (!apiKey) {
+    result.innerHTML = '<span style="color:var(--color-error);">❌ 请先填写 API Key</span>';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ 测试中…';
+  result.innerHTML = '';
+
+  try {
+    const conf = PROVIDER_CONFIG[provider] || PROVIDER_CONFIG.openai;
+    const url = (baseUrl || conf.baseUrl).replace(/\/+$/, '');
+    const testModel = model || conf.defaultModel;
+
+    let fetchUrl, headers, body;
+
+    if (conf.format === 'anthropic') {
+      fetchUrl = url + '/messages';
+      headers = {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      };
+      body = JSON.stringify({ model: testModel, max_tokens: 10, messages: [{ role: 'user', content: 'Hi' }] });
+    } else {
+      fetchUrl = url + '/chat/completions';
+      headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey };
+      body = JSON.stringify({ model: testModel, max_tokens: 10, messages: [{ role: 'user', content: 'Hi' }] });
+    }
+
+    const resp = await fetch(fetchUrl, { method: 'POST', headers, body });
+
+    if (resp.ok) {
+      result.innerHTML = '<span style="color:var(--color-success);">✅ 连接成功！配置有效</span>';
+    } else if (resp.status === 401) {
+      result.innerHTML = '<span style="color:var(--color-error);">❌ API Key 无效</span>';
+    } else if (resp.status === 403) {
+      result.innerHTML = '<span style="color:var(--color-error);">❌ 权限不足，请检查 Key 权限</span>';
+    } else if (resp.status === 404) {
+      result.innerHTML = '<span style="color:var(--color-error);">❌ 接口地址错误或模型不存在</span>';
+    } else {
+      const errData = await resp.json().catch(() => ({}));
+      result.innerHTML = `<span style="color:var(--color-error);">❌ 请求失败 (${resp.status}): ${errData.error?.message || '未知错误'}</span>`;
+    }
+  } catch (e) {
+    if (e.name === 'TypeError' && e.message.includes('Failed to fetch')) {
+      result.innerHTML = '<span style="color:var(--color-error);">❌ 网络错误或跨域限制，建议填写支持跨域的 Base URL</span>';
+    } else {
+      result.innerHTML = `<span style="color:var(--color-error);">❌ ${e.message}</span>`;
+    }
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔗 连接测试';
+  }
+}
+
+function toggleSwitch(label) {
+  const sw = label.querySelector('.toggle-switch');
+  sw.classList.toggle('on');
+}
+
+function saveSettings() {
+  const provider = document.getElementById('setting-provider').value;
+  const apiKey = document.getElementById('setting-api-key').value.trim();
+  const model = document.getElementById('setting-model').value.trim();
+  const baseUrl = document.getElementById('setting-base-url') ? document.getElementById('setting-base-url').value.trim() : '';
+  const autoSave = document.querySelector('.toggle-switch').classList.contains('on');
+  const lang = document.getElementById('setting-lang').value;
+
+  localStorage.setItem('ai_provider', provider);
+  localStorage.setItem('ai_api_key', apiKey);
+  localStorage.setItem('ai_model', model);
+  localStorage.setItem('ai_base_url', baseUrl);
+  localStorage.setItem('ai_auto_save', autoSave);
+  localStorage.setItem('ai_lang', lang);
+
+  // 简单的保存成功反馈
+  const btn = event.target;
+  const origText = btn.textContent;
+  btn.textContent = '✅ 已保存';
+  btn.disabled = true;
+  setTimeout(() => { btn.textContent = origText; btn.disabled = false; }, 1500);
+}
+
+function resetSettings() {
+  if (!confirm('确定要清除所有 AI 配置吗？')) return;
+  ['ai_provider','ai_api_key','ai_model','ai_base_url','ai_auto_save','ai_lang'].forEach(k => localStorage.removeItem(k));
+  renderSettings();
+}
+</script>
+</body>
+</html>
