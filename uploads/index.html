@@ -266,12 +266,33 @@ h3 { font-size: 1.1rem; line-height: 1.4; }
   display: flex; align-items: center; gap: 6px; margin-bottom: 3px;
 }
 .req-field-dot { font-size: 0.6rem; line-height: 1; }
+.req-field-num {
+  width: 18px; height: 18px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.62rem; font-family: var(--font-mono); font-weight: 600;
+  flex-shrink: 0;
+}
+.req-field-num.num-done { background: rgba(91,140,90,0.14); color: var(--color-success); }
+.req-field-num.num-partial { background: rgba(196,145,60,0.14); color: var(--color-warning); }
+.req-field-num.num-missing { background: rgba(0,0,0,0.05); color: var(--text-muted); }
 .req-field-label {
   font-size: 0.78rem; font-weight: 500; color: var(--text-tertiary);
 }
 .req-field-value {
   font-size: 0.85rem; color: var(--text-primary); line-height: 1.5;
   padding-left: 18px;
+  min-height: 22px;
+  border-radius: 4px;
+  outline: none;
+}
+.req-field-value:focus {
+  background: rgba(74,127,181,0.08);
+  box-shadow: 0 0 0 1px rgba(74,127,181,0.18);
+}
+.req-field-value:empty::before {
+  content: attr(data-placeholder);
+  color: var(--text-muted);
+  font-style: italic;
 }
 @keyframes fieldFlash {
   0% { background: rgba(139,115,85,0.12); }
@@ -280,6 +301,18 @@ h3 { font-size: 1.1rem; line-height: 1.4; }
 .field-empty .req-field-value {
   font-size: 0.82rem;
 }
+.status-dot.preview { background: var(--color-info); box-shadow: 0 0 0 3px rgba(91,123,143,0.16); }
+.preview-notice {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 14px; margin-bottom: 18px;
+  background: var(--color-ai-bg);
+  border: 1px solid rgba(74,127,181,0.16);
+  border-left: 3px solid var(--color-ai);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.84rem; line-height: 1.6;
+}
+.preview-notice strong { color: var(--color-ai); }
 
 /* ============================================================
    Scrollbar
@@ -1029,31 +1062,31 @@ h3 { font-size: 1.1rem; line-height: 1.4; }
       </div>
       <!-- Tab 0: 一句话输入 -->
       <div class="modal-tab-panel" data-tab="0">
-        <textarea style="width:100%;height:100px;padding:12px;border:1px solid rgba(139,115,85,0.2);border-radius:var(--radius-sm);font-size:0.95rem;resize:vertical;background:var(--bg-paper-warm);"
+        <textarea id="new-req-input" style="width:100%;height:100px;padding:12px;border:1px solid rgba(139,115,85,0.2);border-radius:var(--radius-sm);font-size:0.95rem;resize:vertical;background:var(--bg-paper-warm);"
           placeholder="描述你的需求想法...">我想做一个 AI 功能，帮用户更快知道自己现在应该怎么养角色。</textarea>
       </div>
       <!-- Tab 1 -->
       <div class="modal-tab-panel" data-tab="1" style="display:none;">
         <div style="text-align:center;padding:32px 16px;color:var(--text-muted);">
           <div style="font-size:2rem;margin-bottom:8px;opacity:0.5;">📋</div>
-          <div style="font-size:0.9rem;font-weight:500;margin-bottom:4px;">粘贴记录</div>
-          <div style="font-size:0.82rem;">即将支持 — 可粘贴聊天记录或会议纪要</div>
+          <div style="font-size:0.9rem;font-weight:500;margin-bottom:4px;color:var(--text-secondary);">粘贴记录入口预览</div>
+          <div style="font-size:0.82rem;line-height:1.6;">后续会支持粘贴聊天记录或会议纪要，并让 AI 先提炼原始诉求。v2 先用一句话入口验证澄清质量。</div>
         </div>
       </div>
       <!-- Tab 2 -->
       <div class="modal-tab-panel" data-tab="2" style="display:none;">
         <div style="text-align:center;padding:32px 16px;color:var(--text-muted);">
           <div style="font-size:2rem;margin-bottom:8px;opacity:0.5;">📎</div>
-          <div style="font-size:0.9rem;font-weight:500;margin-bottom:4px;">上传材料</div>
-          <div style="font-size:0.82rem;">即将支持 — 可上传 .doc .pdf .png 等文件</div>
+          <div style="font-size:0.9rem;font-weight:500;margin-bottom:4px;color:var(--text-secondary);">上传材料入口预览</div>
+          <div style="font-size:0.82rem;line-height:1.6;">后续会支持上传文档、截图和表格。当前 demo 不做文件解析，避免把占位能力误认为真实能力。</div>
         </div>
       </div>
       <!-- Tab 3 -->
       <div class="modal-tab-panel" data-tab="3" style="display:none;">
         <div style="text-align:center;padding:32px 16px;color:var(--text-muted);">
           <div style="font-size:2rem;margin-bottom:8px;opacity:0.5;">📐</div>
-          <div style="font-size:0.9rem;font-weight:500;margin-bottom:4px;">选择模板</div>
-          <div style="font-size:0.82rem;">即将支持 — 提供功能需求、活动需求等模板</div>
+          <div style="font-size:0.9rem;font-weight:500;margin-bottom:4px;color:var(--text-secondary);">选择模板入口预览</div>
+          <div style="font-size:0.82rem;line-height:1.6;">后续会按功能、活动、数据、后台需求提供不同追问目录。v2 先跑通通用需求澄清链路。</div>
         </div>
       </div>
       <!-- AI识别预览 -->
@@ -1068,7 +1101,7 @@ h3 { font-size: 1.1rem; line-height: 1.4; }
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal()">取消</button>
-      <button class="btn btn-primary" onclick="closeModal();navigate('/notebook/ai-clarify')">创建并开始梳理 →</button>
+      <button class="btn btn-primary" id="modal-create-btn" onclick="createNotebookFromModal()">创建并开始梳理 →</button>
     </div>
   </div>
 </div>
@@ -1203,14 +1236,34 @@ async function callAI(messages, { onChunk, onDone, onError }) {
 /* ============================================================
    Clarify Chat State
    ============================================================ */
-const CLARIFY_SYSTEM_PROMPT = `你是一个资深产品经理助手，专门帮助梳理和完善产品需求。你的工作方式：
+const CLARIFY_STORAGE_KEYS = {
+  state: 'prd_handbook_clarify_state_v2',
+  messages: 'prd_handbook_clarify_messages_v2',
+  demoTurn: 'prd_handbook_demo_turn_v2',
+};
+
+const CLARITY_DIMENSIONS = ['目标用户', '核心场景', '功能范围', '非目标', '成功指标', '异常处理', '数据方案'];
+const CARD_FIELD_KEYS = ['需求名称','需求背景','目标用户','核心场景','核心目标','功能范围','非目标','成功指标','异常处理','数据方案','主要风险'];
+const FIELD_DIMENSION_MAP = {
+  '目标用户': '目标用户',
+  '核心场景': '核心场景',
+  '功能范围': '功能范围',
+  '非目标': '非目标',
+  '成功指标': '成功指标',
+  '异常处理': '异常处理',
+  '数据方案': '数据方案',
+};
+
+const DEFAULT_ORIGINAL_REQUIREMENT = '我想做一个 AI 功能，帮用户更快知道自己现在应该怎么养角色。';
+
+const CLARIFY_SYSTEM_PROMPT = `你是一个资深产品经理助手，专门帮助 PM 把模糊需求追问清楚。你的语气要专业、直接、克制：少寒暄，先指出缺口，再问具体问题。
 
 1. 根据用户提供的初始需求描述，逐步追问来补全关键信息
 2. 需要覆盖的信息维度包括：目标用户、核心场景、功能范围、非目标（不做的事）、成功指标、异常处理、数据方案
 3. 每次只问 1-2 个问题，保持对话简洁高效
 4. 当某个维度的信息已经足够清晰时，用 ✅ 标注并进入下一个维度
 5. 当所有关键信息都已补全时，给出总结，告知用户需求卡片已基本完善
-6. 用中文回复，语气专业但友好，适当使用 emoji 增加可读性
+6. 用中文回复，不要用大段套话，不要替用户编造未确认事实
 7. 如果用户的回答模糊，帮助他们具体化，而不是直接跳过
 
 【重要】每次回复的末尾，你必须输出一段 JSON 状态块（用 \`\`\`json 和 \`\`\` 包裹），格式如下：
@@ -1234,21 +1287,20 @@ const CLARIFY_SYSTEM_PROMPT = `你是一个资深产品经理助手，专门帮�
     "功能范围": "...",
     "非目标": "...",
     "成功指标": "...",
+    "异常处理": "...",
+    "数据方案": "...",
     "主要风险": "..."
-  },
-  "completeness": 0-100,
-  "isComplete": false
+  }
 }
 \`\`\`
 - status 规则：已明确填写=done，部分信息=partial，完全缺失=missing
-- completeness：根据 7 个维度的完成情况估算 0-100 的百分比
-- isComplete：当你认为需求卡片已基本完善（completeness>=80）时设为 true
 - card 中的字段，如果还未获得信息则填 ""（空字符串）
+- 不要输出 completeness 或 isComplete，前端会根据 7 个维度固定计算完成度
 - 这个 JSON 块不会显示给用户看，仅用于前端解析更新UI`;
 
 // 初始 Mock 对话（作为示例 & 兜底）
 const MOCK_CHAT_MESSAGES = [
-  { role: 'user', content: '我想做一个 AI 功能，帮用户更快知道自己现在应该怎么养角色。' },
+  { role: 'user', content: DEFAULT_ORIGINAL_REQUIREMENT },
   { role: 'assistant', content: '收到你的需求想法！我来帮你一步步梳理清楚。先确认几个关键信息——这个AI养成建议功能，主要服务哪类玩家？' },
   { role: 'user', content: '主要是不太懂怎么养角色的新手和回流玩家，他们容易走弯路浪费资源。' },
   { role: 'assistant', content: '明白了，目标用户锁定为「中低理解门槛玩家」。那用户是在什么场景下使用这个功能？从哪里进入？' },
@@ -1260,18 +1312,15 @@ const MOCK_CHAT_MESSAGES = [
   { role: 'assistant', content: '需求卡片已基本完善 ✨ 右侧可查看结构化结果。建议下一步：生成原型方案。当前完成度：**75%**' },
 ];
 
-let clarifyMessages = [...MOCK_CHAT_MESSAGES];
-let isAIResponding = false;
-
-// 需求卡片状态追踪
-let clarifyState = {
+const DEFAULT_CLARIFY_STATE = {
+  originalRequirement: DEFAULT_ORIGINAL_REQUIREMENT,
   dimensions: {
     '目标用户': { status: 'done', value: '中低理解门槛玩家、回流玩家、新区玩家' },
     '核心场景': { status: 'done', value: '用户进入角色页后，希望获得养成建议' },
     '功能范围': { status: 'done', value: '养成优先级、阵容建议、资源投入建议' },
     '非目标':   { status: 'partial', value: '不做战斗模拟、不做人工客服' },
     '成功指标': { status: 'partial', value: '点击率、生成成功率、查看率' },
-    '异常处理': { status: 'missing', value: '' },
+    '异常处理': { status: 'partial', value: '数据不完整时提示补充' },
     '数据方案': { status: 'missing', value: '' },
   },
   card: {
@@ -1283,11 +1332,113 @@ let clarifyState = {
     '功能范围': '读取角色数据、养成优先级、阵容建议、资源投入建议',
     '非目标': '首期不做复杂战斗模拟，不做人工客服，不做全量攻略库',
     '成功指标': '点击率、生成成功率、查看率、采纳率',
+    '异常处理': '数据不完整时提示用户补充关键数据',
+    '数据方案': '',
     '主要风险': '数据不完整导致建议不准；AI结果过泛；玩家不信任',
   },
   completeness: 65,
   isComplete: false,
+  stampShown: false,
 };
+
+let clarifyMessages = loadClarifyMessages();
+let clarifyState = loadClarifyState();
+let demoTurn = loadDemoTurn();
+let isAIResponding = false;
+
+normalizeClarifyState(clarifyState);
+recomputeClarifyCompletion({ persist: false, triggerStamp: false });
+
+function cloneJSON(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+function createEmptyDimensions() {
+  return CLARITY_DIMENSIONS.reduce((acc, dim) => {
+    acc[dim] = { status: 'missing', value: '' };
+    return acc;
+  }, {});
+}
+
+function loadClarifyMessages() {
+  try {
+    const raw = localStorage.getItem(CLARIFY_STORAGE_KEYS.messages);
+    if (!raw) return cloneJSON(MOCK_CHAT_MESSAGES);
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) && parsed.length ? parsed : cloneJSON(MOCK_CHAT_MESSAGES);
+  } catch(e) {
+    return cloneJSON(MOCK_CHAT_MESSAGES);
+  }
+}
+
+function loadClarifyState() {
+  try {
+    const raw = localStorage.getItem(CLARIFY_STORAGE_KEYS.state);
+    if (!raw) return cloneJSON(DEFAULT_CLARIFY_STATE);
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? parsed : cloneJSON(DEFAULT_CLARIFY_STATE);
+  } catch(e) {
+    return cloneJSON(DEFAULT_CLARIFY_STATE);
+  }
+}
+
+function loadDemoTurn() {
+  const val = parseInt(localStorage.getItem(CLARIFY_STORAGE_KEYS.demoTurn) || '0', 10);
+  return Number.isFinite(val) && val >= 0 ? val : 0;
+}
+
+function saveClarifyState() {
+  localStorage.setItem(CLARIFY_STORAGE_KEYS.state, JSON.stringify(clarifyState));
+}
+
+function saveClarifyMessages() {
+  localStorage.setItem(CLARIFY_STORAGE_KEYS.messages, JSON.stringify(clarifyMessages));
+}
+
+function saveDemoTurn() {
+  localStorage.setItem(CLARIFY_STORAGE_KEYS.demoTurn, String(demoTurn));
+}
+
+function normalizeClarifyState(state) {
+  if (!state.originalRequirement) state.originalRequirement = DEFAULT_ORIGINAL_REQUIREMENT;
+  state.dimensions = { ...createEmptyDimensions(), ...(state.dimensions || {}) };
+  CLARITY_DIMENSIONS.forEach(dim => {
+    const current = state.dimensions[dim] || {};
+    state.dimensions[dim] = {
+      status: ['done','partial','missing'].includes(current.status) ? current.status : 'missing',
+      value: current.value || '',
+    };
+  });
+  state.card = { ...cloneJSON(DEFAULT_CLARIFY_STATE.card), ...(state.card || {}) };
+  CARD_FIELD_KEYS.forEach(key => {
+    if (typeof state.card[key] !== 'string') state.card[key] = '';
+  });
+  state.stampShown = !!state.stampShown;
+}
+
+function calculateClarifyCompleteness(dimensions = clarifyState.dimensions) {
+  const score = CLARITY_DIMENSIONS.reduce((sum, dim) => {
+    const status = dimensions[dim]?.status || 'missing';
+    if (status === 'done') return sum + 1;
+    if (status === 'partial') return sum + 0.5;
+    return sum;
+  }, 0);
+  return Math.round((score / CLARITY_DIMENSIONS.length) * 100);
+}
+
+function recomputeClarifyCompletion(opts = {}) {
+  const { persist = true, triggerStamp = false } = opts;
+  const wasComplete = !!clarifyState.isComplete;
+  clarifyState.completeness = calculateClarifyCompleteness();
+  clarifyState.isComplete = clarifyState.completeness >= 80;
+  if (triggerStamp && !wasComplete && clarifyState.isComplete && !clarifyState.stampShown) {
+    clarifyState.stampShown = true;
+    if (persist) saveClarifyState();
+    triggerStampAnimation();
+  } else if (persist) {
+    saveClarifyState();
+  }
+}
 
 // 从 AI 回复中解析 JSON 状态块
 function parseAIStateBlock(text) {
@@ -1302,23 +1453,43 @@ function parseAIStateBlock(text) {
 
 // 从 AI 回复中移除 JSON 块（不展示给用户）
 function stripStateBlock(text) {
-  return text.replace(/\s*```json\s*[\s\S]*?\s*```\s*$/, '').trim();
+  return text
+    .replace(/\s*```json\s*[\s\S]*?\s*```\s*$/, '')
+    .replace(/\s*```json\s*[\s\S]*$/, '')
+    .trim();
 }
 
 // 更新 UI：需求卡片字段 + 进度条
 function updateClarifyUI(newState) {
-  if (!newState) return;
   // 合并状态
-  if (newState.dimensions) clarifyState.dimensions = newState.dimensions;
-  if (newState.card) {
+  if (newState?.dimensions) {
+    CLARITY_DIMENSIONS.forEach(dim => {
+      const next = newState.dimensions[dim];
+      if (!next) return;
+      clarifyState.dimensions[dim] = {
+        status: ['done','partial','missing'].includes(next.status) ? next.status : 'missing',
+        value: next.value || '',
+      };
+    });
+  }
+  if (newState?.card) {
     Object.keys(newState.card).forEach(k => {
       if (newState.card[k]) clarifyState.card[k] = newState.card[k];
     });
   }
-  if (typeof newState.completeness === 'number') clarifyState.completeness = newState.completeness;
-  if (typeof newState.isComplete === 'boolean') clarifyState.isComplete = newState.isComplete;
+  normalizeClarifyState(clarifyState);
+  recomputeClarifyCompletion({ persist: true, triggerStamp: true });
+  refreshClarifyProgressUI();
 
-  // 更新完成度进度条
+  // 更新需求卡片字段（统一面板）
+  const cardContainer = document.getElementById('req-card-dynamic');
+  if (cardContainer) cardContainer.innerHTML = renderRequirementFields();
+
+  // 更新侧边栏状态
+  updateSidebarStatus();
+}
+
+function refreshClarifyProgressUI() {
   const progressBar = document.getElementById('clarify-progress-bar');
   const progressText = document.getElementById('clarify-progress-text');
   if (progressBar) {
@@ -1327,43 +1498,97 @@ function updateClarifyUI(newState) {
   }
   if (progressText) progressText.textContent = clarifyState.completeness + '%';
 
-  // 更新需求卡片字段（统一面板）
-  const cardContainer = document.getElementById('req-card-dynamic');
-  if (cardContainer) {
-    const fieldKeys = ['需求名称','需求背景','目标用户','核心场景','核心目标','功能范围','非目标','成功指标','主要风险'];
-    let cardHTML = '';
-    fieldKeys.forEach(key => {
-      const val = clarifyState.card[key] || '';
-      const filled = val.length > 0;
-      const dimKey = {'需求名称':'','需求背景':'','目标用户':'目标用户','核心场景':'核心场景','核心目标':'','功能范围':'功能范围','非目标':'非目标','成功指标':'成功指标','主要风险':'异常处理'}[key];
-      const dimStatus = dimKey && clarifyState.dimensions[dimKey] ? clarifyState.dimensions[dimKey].status : (filled ? 'done' : 'missing');
-      const statusDot = { done: '🟢', partial: '🟡', missing: '⚪' }[dimStatus] || '⚪';
-      cardHTML += `<div class="req-field-row ${filled ? 'field-filled' : 'field-empty'}">
-        <div class="req-field-header">
-          <span class="req-field-dot">${statusDot}</span>
-          <span class="req-field-label">${key}</span>
-        </div>
-        <div class="req-field-value" style="${filled ? '' : 'color:var(--text-muted);font-style:italic;font-size:0.82rem;'}">${filled ? val : '等待对话补充…'}</div>
-      </div>`;
-    });
-    cardContainer.innerHTML = cardHTML;
+  const action = document.getElementById('clarify-next-action');
+  if (action) {
+    action.innerHTML = clarifyState.isComplete 
+      ? `<button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="navigate('/notebook/overview')">进入需求总览 →</button>`
+      : `<button class="btn btn-secondary" style="width:100%;justify-content:center;opacity:0.6;cursor:not-allowed;" disabled>完成度 ≥ 80% 后解锁下一步</button>`;
   }
+}
 
-  // 更新侧边栏状态
+function escapeHTML(text) {
+  return String(text || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function renderRequirementFields() {
+  return CARD_FIELD_KEYS.map((key, idx) => renderRequirementField(key, idx)).join('');
+}
+
+function renderRequirementField(key, idx) {
+  const val = clarifyState.card[key] || '';
+  const filled = val.trim().length > 0;
+  const dimKey = FIELD_DIMENSION_MAP[key];
+  const dimStatus = dimKey && clarifyState.dimensions[dimKey] ? clarifyState.dimensions[dimKey].status : (filled ? 'done' : 'missing');
+  const numCls = dimStatus === 'done' ? 'num-done' : dimStatus === 'partial' ? 'num-partial' : 'num-missing';
+  return `<div class="req-field-row ${filled ? 'field-filled' : 'field-empty'}" data-field-row="${key}">
+    <div class="req-field-header">
+      <span class="req-field-num ${numCls}" data-field-num="${key}">${idx + 1}</span>
+      <span class="req-field-label">${key}</span>
+    </div>
+    <div class="req-field-value-wrap">
+      <div class="req-field-value" contenteditable="true" data-field="${key}" data-placeholder="点击填写${key}..." oninput="onFieldEdit(this, '${key}')" onblur="onFieldBlur(this, '${key}')">${escapeHTML(val)}</div>
+    </div>
+  </div>`;
+}
+
+function inferDimensionStatusFromValue(value) {
+  const text = (value || '').trim();
+  if (!text) return 'missing';
+  return text.length >= 8 ? 'done' : 'partial';
+}
+
+function syncDimensionFromField(key) {
+  const dim = FIELD_DIMENSION_MAP[key];
+  if (!dim) return;
+  const value = (clarifyState.card[key] || '').trim();
+  clarifyState.dimensions[dim] = {
+    status: inferDimensionStatusFromValue(value),
+    value,
+  };
+}
+
+function updateFieldRowVisual(key) {
+  const row = document.querySelector(`[data-field-row="${key}"]`);
+  const num = document.querySelector(`[data-field-num="${key}"]`);
+  if (!row || !num) return;
+  const filled = (clarifyState.card[key] || '').trim().length > 0;
+  const dim = FIELD_DIMENSION_MAP[key];
+  const status = dim ? clarifyState.dimensions[dim]?.status : (filled ? 'done' : 'missing');
+  row.classList.toggle('field-filled', filled);
+  row.classList.toggle('field-empty', !filled);
+  num.className = 'req-field-num ' + (status === 'done' ? 'num-done' : status === 'partial' ? 'num-partial' : 'num-missing');
+}
+
+function onFieldEdit(el, key) {
+  clarifyState.card[key] = (el.textContent || '').trim();
+  syncDimensionFromField(key);
+  recomputeClarifyCompletion({ persist: true, triggerStamp: true });
+  updateFieldRowVisual(key);
+  refreshClarifyProgressUI();
   updateSidebarStatus();
+}
 
-  // 如果已完成，触发盖章动画
-  if (clarifyState.isComplete && !document.getElementById('stamp-overlay')) {
-    triggerStampAnimation();
-  }
+function onFieldBlur(el, key) {
+  clarifyState.card[key] = (el.textContent || '').trim();
+  syncDimensionFromField(key);
+  recomputeClarifyCompletion({ persist: true, triggerStamp: true });
+  updateFieldRowVisual(key);
+  refreshClarifyProgressUI();
+  updateSidebarStatus();
 }
 
 // 更新侧边栏导航状态
 function updateSidebarStatus() {
-  const dots = document.querySelectorAll('.nb-sidebar-item .status-dot');
-  if (dots.length > 0 && clarifyState.isComplete) {
-    dots[0].className = 'status-dot done'; // 需求梳理变为已完成
-  }
+  document.querySelectorAll('.nb-sidebar-item .status-dot').forEach((dot, idx) => {
+    const status = idx === 0
+      ? (clarifyState.isComplete ? 'done' : 'current')
+      : (clarifyState.isComplete ? 'preview' : 'pending');
+    dot.className = 'status-dot ' + status;
+  });
 }
 
 // 盖章动画
@@ -1399,8 +1624,9 @@ function renderMessageHTML(role, text) {
   // 将 assistant 角色映射到 ai 样式
   const cls = role === 'user' ? 'user' : 'ai';
   const avatar = role === 'user' ? '👤' : '🤖';
+  const safeText = role === 'user' ? text : stripStateBlock(text);
   // 简单的 markdown → HTML：**bold**, \n→<br>
-  const html = text
+  const html = safeText
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\n/g, '<br>');
@@ -1445,6 +1671,76 @@ function setChatInputState(disabled) {
   if (btn) btn.disabled = disabled;
 }
 
+function getDemoClarifyReply(userText) {
+  const cleaned = (userText || '').trim();
+  const turn = demoTurn;
+  demoTurn += 1;
+  saveDemoTurn();
+
+  if (turn === 0) {
+    return {
+      text: `收到。你补充的信息里已经能看出一部分边界，但还差两块会影响研发判断：\n\n✅ 异常处理：我先按「数据不完整时提示补充并允许重试」记录。\n✅ 成功指标：我先按点击率、生成成功率、结果页查看率、采纳率记录。\n\n还需要你补一句：这些指标上线后从哪里看？是已有数据平台、临时埋点，还是只做手动复盘？`,
+      state: {
+        dimensions: {
+          '成功指标': { status: 'done', value: '点击率、生成成功率、结果页查看率、建议采纳率' },
+          '异常处理': { status: 'done', value: '数据不完整时提示补充，生成失败时允许重试并展示兜底说明' },
+          '数据方案': { status: 'partial', value: '需要确认数据来源和复盘口径' },
+        },
+        card: {
+          '成功指标': '点击率、生成成功率、结果页查看率、建议采纳率',
+          '异常处理': '数据不完整时提示用户补充关键数据；AI 生成失败时展示兜底说明并允许重试',
+          '数据方案': '待确认：指标来源、埋点事件、复盘周期',
+          '主要风险': '数据不完整导致建议不准；AI结果过泛；玩家不信任建议；数据来源不清会影响复盘',
+        },
+      },
+    };
+  }
+
+  if (turn === 1) {
+    return {
+      text: `这次补充够用了。我把数据方案收成可推进版本：\n\n✅ 数据方案：上线前定义入口曝光、点击、授权、生成、结果查看、分享 6 个事件；上线后按 3/7/14 天观察漏斗。\n✅ 非目标：首期不做战斗模拟、人工客服、全量攻略库。\n\n现在需求卡片已达到可推进状态。下一步适合进入总览，看后续章节的愿景预览。`,
+      state: {
+        dimensions: {
+          '非目标': { status: 'done', value: '首期不做战斗模拟、人工客服、全量攻略库' },
+          '数据方案': { status: 'done', value: '定义入口曝光、点击、授权、生成、结果查看、分享事件；按 3/7/14 天观察漏斗' },
+        },
+        card: {
+          '非目标': '首期不做复杂战斗模拟，不做人工客服，不做全量攻略库',
+          '数据方案': '埋点覆盖入口曝光、入口点击、授权确认、生成开始、生成成功/失败、结果查看、分享点击；上线后按 3/7/14 天观察漏斗与生成质量',
+        },
+      },
+    };
+  }
+
+  return {
+    text: `这条我会作为补充备注处理，但当前卡片已经足够进入下一步。真正要继续压实的话，优先补「验收标准」和「数据看板负责人」，否则研发能做，复盘不一定能落地。`,
+    state: {
+      dimensions: {},
+      card: {
+        '主要风险': cleaned ? `补充备注：${cleaned}` : clarifyState.card['主要风险'],
+      },
+    },
+  };
+}
+
+function runDemoClarifyReply(userText, aiDiv, countEl) {
+  const reply = getDemoClarifyReply(userText);
+  setTimeout(() => {
+    if (aiDiv) {
+      aiDiv.classList.remove('msg-loading');
+      updateMessageBubble(aiDiv, reply.text);
+    }
+    clarifyMessages.push({ role: 'assistant', content: reply.text });
+    saveClarifyMessages();
+    if (countEl) countEl.textContent = `共 ${clarifyMessages.length} 条对话`;
+    updateClarifyUI(reply.state);
+    isAIResponding = false;
+    setChatInputState(false);
+    const inp = document.getElementById('clarify-input');
+    if (inp) inp.focus();
+  }, 450);
+}
+
 async function sendClarifyMessage() {
   const input = document.getElementById('clarify-input');
   if (!input) return;
@@ -1454,6 +1750,7 @@ async function sendClarifyMessage() {
   // 追加用户消息
   input.value = '';
   clarifyMessages.push({ role: 'user', content: text });
+  saveClarifyMessages();
   appendMessage('user', text);
 
   // 更新对话计数
@@ -1464,6 +1761,12 @@ async function sendClarifyMessage() {
   isAIResponding = true;
   setChatInputState(true);
   const aiDiv = appendMessage('assistant', '', { loading: true });
+
+  const aiConfig = getAIConfig();
+  if (!aiConfig.hasKey) {
+    runDemoClarifyReply(text, aiDiv, countEl);
+    return;
+  }
 
   const messages = [
     { role: 'system', content: CLARIFY_SYSTEM_PROMPT },
@@ -1485,6 +1788,7 @@ async function sendClarifyMessage() {
       const displayText = stripStateBlock(fullText);
       updateMessageBubble(aiDiv, displayText);
       clarifyMessages.push({ role: 'assistant', content: fullText });
+      saveClarifyMessages();
       if (countEl) countEl.textContent = `共 ${clarifyMessages.length} 条对话`;
       isAIResponding = false;
       setChatInputState(false);
@@ -1522,12 +1826,12 @@ const NOTEBOOKS = [
 
 const SIDEBAR_ITEMS = [
   { icon: '📋', label: '需求梳理', route: '/notebook/ai-clarify', get status() { return clarifyState.isComplete ? 'done' : 'current'; } },
-  { icon: '📐', label: '原型方案', route: '/notebook/prototype', get status() { return clarifyState.isComplete ? 'current' : 'pending'; } },
-  { icon: '🔀', label: '逻辑图',   route: '/notebook/logic',     get status() { return 'pending'; } },
-  { icon: '📄', label: 'PRD文档',  route: '/notebook/prd',       get status() { return 'pending'; } },
-  { icon: '📈', label: '数据方案', route: '/notebook/data-plan',  get status() { return 'pending'; } },
-  { icon: '📝', label: '数据录入', route: '/notebook/data-input', get status() { return 'pending'; } },
-  { icon: '🔍', label: 'AI复盘',   route: '/notebook/ai-review', get status() { return 'pending'; } },
+  { icon: '📐', label: '原型方案', route: '/notebook/prototype', get status() { return clarifyState.isComplete ? 'preview' : 'pending'; } },
+  { icon: '🔀', label: '逻辑图',   route: '/notebook/logic',     get status() { return clarifyState.isComplete ? 'preview' : 'pending'; } },
+  { icon: '📄', label: 'PRD文档',  route: '/notebook/prd',       get status() { return clarifyState.isComplete ? 'preview' : 'pending'; } },
+  { icon: '📈', label: '数据方案', route: '/notebook/data-plan',  get status() { return clarifyState.isComplete ? 'preview' : 'pending'; } },
+  { icon: '📝', label: '数据录入', route: '/notebook/data-input', get status() { return clarifyState.isComplete ? 'preview' : 'pending'; } },
+  { icon: '🔍', label: 'AI复盘',   route: '/notebook/ai-review', get status() { return clarifyState.isComplete ? 'preview' : 'pending'; } },
 ];
 
 const FILTERS = ['全部','梳理中','设计中','开发中','已上线','已复盘'];
@@ -1708,7 +2012,11 @@ function togglePanel(id) {
   }
 }
 
-function openModal() { $('#modal-new').classList.add('show'); }
+function openModal() {
+  const firstTab = $$('#modal-new .filter-tab')[0];
+  if (firstTab) switchModalTab(firstTab, 0);
+  $('#modal-new').classList.add('show');
+}
 function closeModal() { $('#modal-new').classList.remove('show'); }
 
 // Close on overlay click
@@ -1721,6 +2029,53 @@ function switchModalTab(btn, idx) {
   btn.classList.add('active');
   $$('#modal-new .modal-tab-panel').forEach(p => p.style.display = 'none');
   $$('#modal-new .modal-tab-panel')[idx].style.display = '';
+  const createBtn = document.getElementById('modal-create-btn');
+  if (createBtn) {
+    createBtn.textContent = idx === 0 ? '创建并开始梳理 →' : '先用一句话开始 →';
+  }
+}
+
+function getActiveModalTabIndex() {
+  return Array.from($$('#modal-new .filter-tab')).findIndex(t => t.classList.contains('active'));
+}
+
+function createNotebookFromModal() {
+  const activeIdx = getActiveModalTabIndex();
+  if (activeIdx > 0) {
+    const firstTab = $$('#modal-new .filter-tab')[0];
+    if (firstTab) switchModalTab(firstTab, 0);
+    const input = document.getElementById('new-req-input');
+    if (input) input.focus();
+    return;
+  }
+
+  const input = document.getElementById('new-req-input');
+  const originalRequirement = (input?.value || '').trim() || DEFAULT_ORIGINAL_REQUIREMENT;
+  const emptyCard = CARD_FIELD_KEYS.reduce((acc, key) => {
+    acc[key] = '';
+    return acc;
+  }, {});
+  emptyCard['需求背景'] = originalRequirement;
+
+  clarifyState = {
+    originalRequirement,
+    dimensions: createEmptyDimensions(),
+    card: emptyCard,
+    completeness: 0,
+    isComplete: false,
+    stampShown: false,
+  };
+  clarifyMessages = [
+    { role: 'user', content: originalRequirement },
+    { role: 'assistant', content: '先不急着写方案。我需要先确认 2 个最关键的信息：这个需求主要服务哪类用户？他们现在具体卡在哪一步？' },
+  ];
+  demoTurn = 0;
+  saveClarifyState();
+  saveClarifyMessages();
+  saveDemoTurn();
+  closeModal();
+  if (getRoute() === '/notebook/ai-clarify') handleRoute();
+  else navigate('/notebook/ai-clarify');
 }
 
 function switchClarifyTab(btn, idx) {
@@ -1800,17 +2155,19 @@ function renderBookCards(books) {
     const isClickable = nb.id === 1;
     const cardStyle = isClickable ? 'cursor:pointer;' : 'cursor:default;opacity:0.7;';
     const onclick = isClickable ? `onclick="navigate('/notebook/ai-clarify')"` : '';
+    const progress = isClickable ? clarifyState.completeness : nb.progress;
+    const stage = isClickable ? (clarifyState.isComplete ? '需求已澄清' : '需求梳理中') : nb.stage;
     return `
     <div class="book-card" data-color="${nb.color}" ${onclick} style="${cardStyle}">
       <div class="book-card-body">
         <div class="book-card-title">${nb.title}</div>
         <div class="book-card-meta">
-          <span class="tag tag-info">${nb.stage}</span>
+          <span class="tag tag-info">${stage}</span>
           ${!isClickable ? '<span class="tag tag-muted" style="font-size:0.7rem;">演示中</span>' : ''}
         </div>
         <div class="book-card-progress">
-          <div class="book-card-progress-bar"><div class="book-card-progress-fill" style="width:${nb.progress}%"></div></div>
-          <div class="book-card-progress-text"><span>完成度</span><span>${nb.progress}%</span></div>
+          <div class="book-card-progress-bar"><div class="book-card-progress-fill" style="width:${progress}%"></div></div>
+          <div class="book-card-progress-text"><span>完成度</span><span>${progress}%</span></div>
         </div>
       </div>
       <div class="book-card-footer">
@@ -1956,38 +2313,13 @@ function renderAIClarify() {
   // 渲染历史对话（从 clarifyMessages 全局状态）
   const chatHTML = clarifyMessages.map(m => renderMessageHTML(m.role, m.content)).join('');
 
-  // 输入栏：有 Key → 可输入；无 Key → 提示去设置
-  let inputBarHTML;
-  if (aiConfig.hasKey) {
-    inputBarHTML = `
-      <input id="clarify-input" placeholder="描述你的需求，AI 帮你梳理…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendClarifyMessage();}">
-      <button class="chat-send-btn" id="clarify-send-btn" onclick="sendClarifyMessage()">发送</button>`;
-  } else {
-    inputBarHTML = `
-      <div class="chat-no-key">
-        <span>⚠️ AI 对话需要配置 API Key</span>
-        <a onclick="navigate('/settings')">前往设置 →</a>
-      </div>`;
-  }
+  const inputBarHTML = `
+    <input id="clarify-input" placeholder="${aiConfig.hasKey ? '描述你的需求，AI 帮你梳理…' : '演示模式：继续回答，AI 会推动右侧卡片…'}" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendClarifyMessage();}">
+    <button class="chat-send-btn" id="clarify-send-btn" onclick="sendClarifyMessage()">发送</button>
+    ${aiConfig.hasKey ? '' : "<button class=\"btn btn-ghost btn-sm\" onclick=\"navigate('/settings')\" title=\"配置真实 AI\">配置真实 AI</button>"}`;
 
   // 渲染需求字段（合并面板，序号标注 + 可编辑）
-  const reqFieldKeys = ['需求名称','需求背景','目标用户','核心场景','核心目标','功能范围','非目标','成功指标','主要风险'];
-  const reqFieldsHTML = reqFieldKeys.map((key, idx) => {
-    const val = clarifyState.card[key] || '';
-    const filled = val.length > 0;
-    const dimKey = {'需求名称':'','需求背景':'','目标用户':'目标用户','核心场景':'核心场景','核心目标':'','功能范围':'功能范围','非目标':'非目标','成功指标':'成功指标','主要风险':'异常处理'}[key];
-    const dimStatus = dimKey && clarifyState.dimensions[dimKey] ? clarifyState.dimensions[dimKey].status : (filled ? 'done' : 'missing');
-    const numCls = dimStatus === 'done' ? 'num-done' : dimStatus === 'partial' ? 'num-partial' : 'num-missing';
-    return `<div class="req-field-row ${filled ? 'field-filled' : 'field-empty'}">
-      <div class="req-field-header">
-        <span class="req-field-num ${numCls}">${idx + 1}</span>
-        <span class="req-field-label">${key}</span>
-      </div>
-      <div class="req-field-value-wrap">
-        <div class="req-field-value" contenteditable="true" data-field="${key}" data-placeholder="点击填写${key}…" oninput="onFieldEdit(this, '${key}')" onblur="onFieldBlur(this, '${key}')">${filled ? val : ''}</div>
-      </div>
-    </div>`;
-  }).join('');
+  const reqFieldsHTML = renderRequirementFields();
 
   const content = `
     <div class="clarify-layout">
@@ -1996,7 +2328,7 @@ function renderAIClarify() {
         <div class="chat-header">
           <span>🤖</span> AI 需求追问
           <span class="tag tag-ai" style="margin-left:auto;" id="clarify-msg-count">共 ${clarifyMessages.length} 条对话</span>
-          ${aiConfig.hasKey ? `<span class="tag tag-success" style="font-size:0.72rem;">🟢 ${aiConfig.provider}</span>` : ''}
+          ${aiConfig.hasKey ? `<span class="tag tag-success" style="font-size:0.72rem;">🟢 ${aiConfig.provider}</span>` : '<span class="tag tag-warning" style="font-size:0.72rem;">演示模式</span>'}
         </div>
         <div class="chat-area" id="clarify-chat-area">${chatHTML}</div>
         <div class="chat-input-bar">
@@ -2018,14 +2350,14 @@ function renderAIClarify() {
         </div>
 
         <!-- Original Requirement -->
-        <div class="original-req" style="margin-bottom:16px;">"我想做一个 AI 功能，帮用户更快知道自己现在应该怎么养角色。"</div>
+        <div class="original-req" style="margin-bottom:16px;">"${escapeHTML(clarifyState.originalRequirement)}"</div>
 
         <!-- Requirement Fields with inline status -->
         <div id="req-card-dynamic" class="req-fields-list">
           ${reqFieldsHTML}
         </div>
 
-        <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(139,115,85,0.1);">
+        <div id="clarify-next-action" style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(139,115,85,0.1);">
           ${clarifyState.isComplete 
             ? `<button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="navigate('/notebook/overview')">进入需求总览 →</button>`
             : `<button class="btn btn-secondary" style="width:100%;justify-content:center;opacity:0.6;cursor:not-allowed;" disabled>完成度 ≥ 80% 后解锁下一步</button>`
@@ -2071,11 +2403,11 @@ function renderOverview() {
 
   const chapters = [
     { icon: '📋', title: '需求梳理', status: clarifyDone ? '已完成' : '进行中', statusCls: clarifyDone ? 'tag-success' : 'tag-warning', desc: `AI 已识别 7 个维度，完成度 ${clarifyState.completeness}%`, route: '/notebook/ai-clarify' },
-    { icon: '📐', title: '原型方案', status: clarifyDone ? '待开始' : '🔒 锁定', statusCls: clarifyDone ? 'tag-muted' : 'tag-muted', desc: clarifyDone ? '已解锁，可生成页面清单与低保真原型' : '需求梳理完成后解锁', route: '/notebook/prototype' },
-    { icon: '🔀', title: '逻辑图',   status: '🔒 锁定', statusCls: 'tag-muted', desc: '需求梳理完成后解锁', route: '/notebook/logic' },
-    { icon: '📄', title: 'PRD文档',  status: '🔒 锁定', statusCls: 'tag-muted', desc: '需求梳理完成后解锁', route: '/notebook/prd' },
-    { icon: '📈', title: '数据方案', status: '🔒 锁定', statusCls: 'tag-muted', desc: '需求梳理完成后解锁', route: '/notebook/data-plan' },
-    { icon: '🔍', title: '效果复盘', status: '🔒 锁定', statusCls: 'tag-muted', desc: '需求梳理完成后解锁', route: '/notebook/ai-review' },
+    { icon: '📐', title: '原型方案', status: clarifyDone ? '预览' : '🔒 锁定', statusCls: clarifyDone ? 'tag-info' : 'tag-muted', desc: clarifyDone ? '愿景预览：后续将由需求卡片生成页面清单与低保真原型' : '需求梳理完成后解锁', route: '/notebook/prototype' },
+    { icon: '🔀', title: '逻辑图',   status: clarifyDone ? '预览' : '🔒 锁定', statusCls: clarifyDone ? 'tag-info' : 'tag-muted', desc: clarifyDone ? '愿景预览：展示后续流程图生成效果' : '需求梳理完成后解锁', route: '/notebook/logic' },
+    { icon: '📄', title: 'PRD文档',  status: clarifyDone ? '预览' : '🔒 锁定', statusCls: clarifyDone ? 'tag-info' : 'tag-muted', desc: clarifyDone ? '愿景预览：展示结构化文档产物样式' : '需求梳理完成后解锁', route: '/notebook/prd' },
+    { icon: '📈', title: '数据方案', status: clarifyDone ? '预览' : '🔒 锁定', statusCls: clarifyDone ? 'tag-info' : 'tag-muted', desc: clarifyDone ? '愿景预览：展示指标、埋点和看板方案' : '需求梳理完成后解锁', route: '/notebook/data-plan' },
+    { icon: '🔍', title: '效果复盘', status: clarifyDone ? '预览' : '🔒 锁定', statusCls: clarifyDone ? 'tag-info' : 'tag-muted', desc: clarifyDone ? '愿景预览：展示上线后数据分析样式' : '需求梳理完成后解锁', route: '/notebook/ai-review' },
   ];
 
   const chaptersHTML = chapters.map(ch => `
@@ -2112,6 +2444,13 @@ function renderOverview() {
 /* ============================================================
    Page 5: 原型方案
    ============================================================ */
+function previewNotice(label) {
+  return `<div class="preview-notice">
+    <span>✨</span>
+    <span><strong>${label}是愿景预览。</strong>当前 v2 的真实能力集中在 AI 澄清和需求卡片；本章节展示后续会由卡片自动生成的产物样式，不代表已完成实时生成。</span>
+  </div>`;
+}
+
 function renderLockedChapter(pageKey, breadcrumbPage, icon, title, desc) {
   const pct = clarifyState.completeness;
   const content = `
@@ -2158,6 +2497,7 @@ function renderPrototype() {
         </div>
       </div>
       <div class="proto-main">
+        ${previewNotice('原型方案')}
         <div id="proto-content">
           <!-- Page info card -->
           <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">
@@ -2317,6 +2657,7 @@ function renderLogic() {
     </div>`;
 
   const content = `
+    ${previewNotice('逻辑图')}
     <h2 style="margin-bottom:16px;">逻辑流程图</h2>
     <div class="logic-tabs" id="logic-tabs">
       <div class="logic-tab active" onclick="switchLogicTab(0)">用户流程</div>
@@ -2365,6 +2706,7 @@ function renderPRD() {
 
       <!-- Document -->
       <div class="prd-content paper-texture">
+        ${previewNotice('PRD文档')}
         <div class="prd-doc-title">AI 角色养成建议助手 — 产品需求文档</div>
         <div class="prd-doc-meta">
           <span class="tag tag-info">V1.0</span>
@@ -2553,6 +2895,7 @@ function renderDataPlan() {
     </div>`).join('');
 
   const content = `
+    ${previewNotice('数据方案')}
     <h2 style="margin-bottom:20px;">📊 数据方案</h2>
 
     <!-- North Star -->
@@ -2651,6 +2994,7 @@ function renderDataInput() {
     </tr>`).join('');
 
   const content = `
+    ${previewNotice('数据录入')}
     <div class="input-header">
       <div class="input-header-left">
         <h2>效果数据录入</h2>
@@ -2784,6 +3128,7 @@ function renderAIReview() {
     </div>`).join('');
 
   const content = `
+    ${previewNotice('AI复盘')}
     <div class="review-header" style="display:flex;justify-content:space-between;align-items:flex-start;">
       <div>
         <h2>🔍 AI 复盘分析</h2>
